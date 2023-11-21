@@ -1,34 +1,39 @@
 import javax.swing.*;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class QuizClient extends JFrame implements Serializable {
 
     public QuizClient() {
+        try (Socket socket = new Socket("127.0.0.1", 5554);
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-        try(Socket socket = new Socket("127.0.0.1", 5554);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
+            // Send data to the server
+            //out.println("Hello, server!");
 
-
-            Object jf = in.readObject();
-            JFrame frame = new JFrame(String.valueOf(jf));
-            //frame.setVisible(true);
-
+            // Receive data from the server
+            while(true) {
+                String response = in.readLine();
+                System.out.println("Received from server: " + response);
+            }
 
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
-
     }
+
+
+
+
+
+
+
+
 
     public static void main(String[] args) {
 

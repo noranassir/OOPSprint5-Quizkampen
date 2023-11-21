@@ -2,41 +2,43 @@ import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
-public class QuizServer {
-
-    int PORT = 55555;
-    List<String> list = new ArrayList<String>();
+public class QuizServer extends Thread implements Serializable{
 
 
-    public QuizServer() {
-
-        list.add("Ett");
-        list.add("Två");
-        list.add("Tre");
-        list.add("Fyra");
-
-        try(ServerSocket serverSocket = new ServerSocket(PORT);
-        Socket socket = serverSocket.accept();
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+    JFrame jf = new JFrame();
+    JPanel jp = new JPanel();
+    JButton jb = new JButton("Hej");
 
 
-                for(String no : list){
-                    out.println(no);
+    Socket s;
 
-                }
+    public QuizServer(Socket s){
+        this.s = s;
 
+    }
+
+    public QuizServer(){}
+
+    //ServerSocket sSocket = new ServerSocket(5554);
+    //Socket socket = sSocket.accept();
+
+
+    public void run() {
+
+        try (
+                ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+                BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));) {
+
+            String hello = "hey";
+            out.writeObject(hello);
 
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        {
+        }
     }
 
-    public static void main(String[] args) {
-        QuizServer server = new QuizServer();
-    }
 }
