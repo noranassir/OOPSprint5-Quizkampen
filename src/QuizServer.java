@@ -2,48 +2,41 @@ import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-public class QuizServer extends JFrame implements Serializable{
+public class QuizServer {
 
-    JFrame jf = new JFrame();
-    JPanel jp = new JPanel();
-    JButton jb = new JButton("Hej");
+    int PORT = 55555;
+    List<String> list = new ArrayList<String>();
+
 
     public QuizServer() {
 
-        try (ServerSocket sSocket = new ServerSocket(5554);
-             Socket socket = sSocket.accept();
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
+        list.add("Ett");
+        list.add("Två");
+        list.add("Tre");
+        list.add("Fyra");
 
-            JFrame jfsend = JFrame();
-            out.writeObject(jfsend);
+        try(ServerSocket serverSocket = new ServerSocket(PORT);
+        Socket socket = serverSocket.accept();
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+
+
+                for(String no : list){
+                    out.println(no);
+
+                }
+
 
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
-    public static void main (String[]args){
-
-        QuizServer qs = new QuizServer();
-
+    public static void main(String[] args) {
+        QuizServer server = new QuizServer();
     }
-
-    public JFrame JFrame () {
-
-        jf.add(jp);
-        jp.add(jb);
-        jf.setVisible(true);
-        jf.setSize(400,300);
-        jf.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        return jf;
-
-    }
-
-
-
 }
