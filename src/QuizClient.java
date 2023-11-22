@@ -51,9 +51,6 @@ public class QuizClient extends JFrame implements Serializable {
     }
 
 
-
-
-
     public void play() throws Exception {
         String response;
         char tag = 'S';
