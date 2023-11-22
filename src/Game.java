@@ -16,7 +16,7 @@ public class Game {
 
     public void ImportQuestions() throws IOException {
 
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\ricka\\Javamapp\\QuizKampen\\OOPSprint5-Quizkampen\\src\\Quiz.txt"))){
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))){
 
             while(true){
                 String input = bufferedReader.readLine();
@@ -114,14 +114,19 @@ public class Game {
             }
         }
 
-        for (int i = 0; i < 6; i++) {
+
+
+
+        List<String>amountOfCorrectAnswers = new ArrayList<>();
+
+        for (int i = 0; i < 6; i++) { //Antal kategorier per runda
 
 
             Collections.shuffle(categoryListRandom, new Random());
             String categorySelect = JOptionPane.showInputDialog("Välj en kategori: " +
-                    "\n1: " + quizCategory[categoryListRandom.get(0)][1] +
-                    "\n2: " + quizCategory[categoryListRandom.get(1)][1] +
-                    "\n3: " + quizCategory[categoryListRandom.get(2)][1]);
+                "\n1: " + quizCategory[categoryListRandom.get(0)][1] +
+                "\n2: " + quizCategory[categoryListRandom.get(1)][1] +
+                "\n3: " + quizCategory[categoryListRandom.get(2)][1]);
 
             int categorySelectInt = 0;
             try {
@@ -141,165 +146,108 @@ public class Game {
                 if (temp - 1 == selectedCategory) {
                     questionsListRandom.add(amountOfQuestions);
                     amountOfQuestions++;
-                }
+               }
             }
+
             Collections.shuffle(questionsListRandom, new Random());
-            int question1 = questionsListRandom.get(0);
-            int question2 = questionsListRandom.get(1);
-            int question3 = questionsListRandom.get(2);
-            String firstQuestion = "";
-            List<Answer> firstQuestionAnswers = new ArrayList<>();
-            String secondQuestion = "";
-            List<Answer> secondQuestionAnswers = new ArrayList<>();
-            String thirdQuestion = "";
-            List<Answer> thirdQuestionAnswers = new ArrayList<>();
-            selectedCategory = selectedCategory + 1;
 
-            for (Question q : quizQuestionsList) {
-                int temp1 = q.getQuizCategory();
-                int temp2 = q.getQuestionNumber();
-                if (temp1 == selectedCategory && temp2 == question1) {
-                    firstQuestion = q.getQuizQuestion();
-                    for (Answer a : quizAnswersList) {
-                        int temp3 = a.getQuizCategory();
-                        int temp4 = a.getQuestionNumber();
-                        int temp5 = a.getAnswerNumber();
-                        if (temp3 == selectedCategory && temp4 == question1 && temp5 == 0) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, true);
-                            firstQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question1 && temp5 == 1) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            firstQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question1 && temp5 == 2) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            firstQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question1 && temp5 == 3) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            firstQuestionAnswers.add(answer);
-                        }
-                    }
-                }
-                if (temp1 == selectedCategory && temp2 == question2) {
-                    secondQuestion = q.getQuizQuestion();
-                    for (Answer a : quizAnswersList) {
-                        int temp3 = a.getQuizCategory();
-                        int temp4 = a.getQuestionNumber();
-                        int temp5 = a.getAnswerNumber();
-                        if (temp3 == selectedCategory && temp4 == question2 && temp5 == 0) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, true);
-                            secondQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question2 && temp5 == 1) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            secondQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question2 && temp5 == 2) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            secondQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question2 && temp5 == 3) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            secondQuestionAnswers.add(answer);
-                        }
-                    }
-                }
-                if (temp1 == selectedCategory && temp2 == question3) {
-                    thirdQuestion = q.getQuizQuestion();
-                    for (Answer a : quizAnswersList) {
-                        int temp3 = a.getQuizCategory();
-                        int temp4 = a.getQuestionNumber();
-                        int temp5 = a.getAnswerNumber();
-                        if (temp3 == selectedCategory && temp4 == question3 && temp5 == 0) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, true);
-                            thirdQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question3 && temp5 == 1) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            thirdQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question3 && temp5 == 2) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            thirdQuestionAnswers.add(answer);
-                        }
-                        if (temp3 == selectedCategory && temp4 == question3 && temp5 == 3) {
-                            String tempAnswer = a.getQuizAnswer();
-                            Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
-                            thirdQuestionAnswers.add(answer);
+
+
+            List<String>gameQuestions = new ArrayList<>();
+            List<Answer>gameAnswers = new ArrayList<>();
+
+            for (int j = 0; j < 3; j++) { //Antal frågor
+                String tempStringQuestion = "";
+
+
+                for (Question q : quizQuestionsList) {
+                    int temp1 = q.getQuizCategory();
+                    int temp2 = q.getQuestionNumber();
+                    if (temp1 == selectedCategory && temp2 == questionsListRandom.get(j)) {
+                        tempStringQuestion = q.getQuizQuestion();
+                        gameQuestions.add(tempStringQuestion);
+                        for (Answer a : quizAnswersList) {
+                            int temp3 = a.getQuizCategory();
+                            int temp4 = a.getQuestionNumber();
+                            int temp5 = a.getAnswerNumber();
+                            if (temp3 == selectedCategory && temp4 == questionsListRandom.get(j) && temp5 == 0) {
+                                String tempAnswer = a.getQuizAnswer();
+                                Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, true);
+                                gameAnswers.add(answer);
+                            }
+                            if (temp3 == selectedCategory && temp4 == questionsListRandom.get(j) && temp5 == 1) {
+                                String tempAnswer = a.getQuizAnswer();
+                                Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
+                                gameAnswers.add(answer);
+                            }
+                            if (temp3 == selectedCategory && temp4 == questionsListRandom.get(j) && temp5 == 2) {
+                                String tempAnswer = a.getQuizAnswer();
+                                Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
+                                gameAnswers.add(answer);
+                            }
+                            if (temp3 == selectedCategory && temp4 == questionsListRandom.get(j) && temp5 == 3) {
+                                String tempAnswer = a.getQuizAnswer();
+                                Answer answer = new Answer(temp3, temp4, temp5, tempAnswer, false);
+                                gameAnswers.add(answer);
+                            }
                         }
                     }
                 }
             }
 
-            Collections.shuffle(firstQuestionAnswers, new Random());
-            Collections.shuffle(secondQuestionAnswers, new Random());
-            Collections.shuffle(thirdQuestionAnswers, new Random());
-            char svar1 = 'x';
-            char svar2 = 'x';
-            char svar3 = 'x';
 
-            String stringAnswer1 = JOptionPane.showInputDialog(firstQuestion +
-                    "\n" + firstQuestionAnswers.get(0).getQuizAnswer() +
-                    "\n" + firstQuestionAnswers.get(1).getQuizAnswer() +
-                    "\n" + firstQuestionAnswers.get(2).getQuizAnswer() +
-                    "\n" + firstQuestionAnswers.get(3).getQuizAnswer());
-            try {
-                int answer1 = Integer.parseInt(stringAnswer1);
-                if (firstQuestionAnswers.get(answer1 - 1).getCorrectAnswer() == true) {
-                    svar1 = 'v';
+            int amountOfGameQuestions = gameQuestions.size();
+            List<Integer>oneToFourRandom = new ArrayList<>();
+            for (int j = 0; j < 4; j++) {
+                oneToFourRandom.add(j);
+            }
+            List<Integer>answerNumber = new ArrayList<>();
+            int tempAnswerNumber = -4;
+            for (int j = 0; j < amountOfGameQuestions; j++) {
+                tempAnswerNumber = tempAnswerNumber+4;
+                answerNumber.add(tempAnswerNumber);
+            }
+
+            String showCorrectAnswers = "";
+            char tempChar;
+            for (int j = 0; j < amountOfGameQuestions; j++) {
+                Collections.shuffle(oneToFourRandom, new Random());
+                String stringAnswer = JOptionPane.showInputDialog(gameQuestions.get(j) +
+                        "\n" + gameAnswers.get(oneToFourRandom.get(0)+answerNumber.get(j)).getQuizAnswer() +
+                        "\n" + gameAnswers.get(oneToFourRandom.get(1)+answerNumber.get(j)).getQuizAnswer() +
+                        "\n" + gameAnswers.get(oneToFourRandom.get(2)+answerNumber.get(j)).getQuizAnswer() +
+                        "\n" + gameAnswers.get(oneToFourRandom.get(3)+answerNumber.get(j)).getQuizAnswer());
+                try{
+                    int answer = Integer.parseInt(stringAnswer);
+                    if (gameAnswers.get(answer - 1).getCorrectAnswer() == true){
+                        amountOfCorrectAnswers.add("V");
+                        tempChar = 'V';
+                    }
+                    else {
+                        amountOfCorrectAnswers.add("X");
+                        tempChar = 'X';
+                    }
+                    showCorrectAnswers = showCorrectAnswers + tempChar;
                 }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
+                catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+
             }
 
 
-            String stringAnswer2 = JOptionPane.showInputDialog(secondQuestion +
-                    "\n" + secondQuestionAnswers.get(0).getQuizAnswer() +
-                    "\n" + secondQuestionAnswers.get(1).getQuizAnswer() +
-                    "\n" + secondQuestionAnswers.get(2).getQuizAnswer() +
-                    "\n" + secondQuestionAnswers.get(3).getQuizAnswer());
 
-            try {
-                int answer2 = Integer.parseInt(stringAnswer2);
-                if (secondQuestionAnswers.get(answer2 - 1).getCorrectAnswer() == true) {
-                    svar2 = 'v';
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-
-            String stringAnswer3 = JOptionPane.showInputDialog(thirdQuestion +
-                    "\n" + thirdQuestionAnswers.get(0).getQuizAnswer() +
-                    "\n" + thirdQuestionAnswers.get(1).getQuizAnswer() +
-                    "\n" + thirdQuestionAnswers.get(2).getQuizAnswer() +
-                    "\n" + thirdQuestionAnswers.get(3).getQuizAnswer());
-
-            try {
-                int answer3 = Integer.parseInt(stringAnswer3);
-                if (thirdQuestionAnswers.get(answer3 - 1).getCorrectAnswer() == true) {
-                    svar3 = 'v';
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-
-
-            JOptionPane.showMessageDialog(null, "Antal rätt: " + svar1 + svar2 + svar3);
+            JOptionPane.showMessageDialog(null, "Antal rätt: " + showCorrectAnswers);
             categoryListRandom.remove(categorySelectInt);
         }
+        int numberOfCorrectAnswers = 0;
+        int correctAnswers = amountOfCorrectAnswers.size();
+        for (int i = 0; i < correctAnswers; i++) {
+            if (amountOfCorrectAnswers.get(i) == "V"){
+                numberOfCorrectAnswers++;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Antal korrekta svar: " +numberOfCorrectAnswers);
 
     }
 
