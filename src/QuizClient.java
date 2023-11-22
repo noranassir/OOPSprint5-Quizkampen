@@ -38,6 +38,14 @@ public class QuizClient extends JFrame implements Serializable {
 
             frame.getContentPane().add(board, "Center");
 
+            kategori1.setVisible(false);            //knappar
+            kategori2.setVisible(false);
+            kategori3.setVisible(false);
+
+            board.add(kategori1);
+            board.add(kategori2);
+            board.add(kategori3);
+
 
         }
     }
@@ -64,7 +72,18 @@ public class QuizClient extends JFrame implements Serializable {
                 response = in.readLine();    //den kommer fortsätta läsa vad servern ger oss, olika alternativ händer beroende på hur spelet utvecklas
                 if (response.startsWith("MESSAGE")) {
                     messageLabel.setText(response.substring(8));
-
+                }
+                else if (response.startsWith("KNAPP1")) {
+                    kategori1.setVisible(true);
+                    kategori1.setText(response.substring(7));
+                }
+                else if (response.startsWith("KNAPP2")) {
+                    kategori2.setVisible(true);
+                    kategori2.setText(response.substring(7));
+                }
+                else if (response.startsWith("KNAPP3")) {
+                    kategori3.setVisible(true);
+                    kategori3.setText((response.substring(7)));
                 }
 
 

@@ -50,11 +50,14 @@ public class QuizServerPlayer extends Thread{
         output.println("MESSAGE all players connected");
 
         if (tag == 'X') {
-            output.println("MESSAGE Vad heter hamburgare?");    //här lägger vi in frågan, och fixar med knappar också
+            output.println("MESSAGE Välj en kategori!");    //här lägger vi in frågan, och fixar med knappar också
+            output.println("KNAPP1 Istället för denna");
+            output.println("KNAPP2 text så ska vi");
+            output.println("KNAPP3 ha variabler eller?");
         }
         if (tag == 'Y') {
             output.println("MESSAGE Väntar på din tur...");
-
+                                                                 //kanske kan pausa med thread wait här när det behövs? osäker
         }
 
 
