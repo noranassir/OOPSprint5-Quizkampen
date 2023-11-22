@@ -27,6 +27,7 @@ public class QuizServerPlayer extends Thread{
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
             output.println("Välkommen" + tag);
+            output.println("MESSAGE väntar på spelare");
 
         } catch (IOException e) {
             System.out.println("Player missing");
@@ -44,12 +45,18 @@ public class QuizServerPlayer extends Thread{
 
     public void run() {
 
-        output.println("du är spelare" + tag);
+        //output.println("du är spelare" + tag);
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        output.println("MESSAGE all players connected");
+
+        if (tag == 'X') {
+            output.println("MESSAGE Vad heter hamburgare?");    //här lägger vi in frågan, och fixar med knappar också
         }
+        if (tag == 'Y') {
+            output.println("MESSAGE Väntar på din tur...");
+
+        }
+
+
     }
 }
