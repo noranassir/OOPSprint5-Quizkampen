@@ -1,10 +1,12 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class QuizClient extends JFrame implements Serializable {
+public class QuizClient extends JFrame implements Serializable, ActionListener {
 
     private JFrame frame = new JFrame("Quizkampen");
     private JLabel messageLabel = new JLabel("");
@@ -65,6 +67,7 @@ public class QuizClient extends JFrame implements Serializable {
 
             }
 
+
             while (true) {
                 response = in.readLine();    //den kommer fortsätta läsa vad servern ger oss, olika alternativ händer beroende på hur spelet utvecklas
                 if (response.startsWith("MESSAGE")) {
@@ -72,15 +75,25 @@ public class QuizClient extends JFrame implements Serializable {
                 }
                 else if (response.startsWith("KNAPP1")) {
                     kategori1.setVisible(true);
+                    kategori1.addActionListener(this);                        //test
                     kategori1.setText(response.substring(7));
                 }
                 else if (response.startsWith("KNAPP2")) {
                     kategori2.setVisible(true);
+                    kategori2.addActionListener(this);                    //test
                     kategori2.setText(response.substring(7));
                 }
                 else if (response.startsWith("KNAPP3")) {
                     kategori3.setVisible(true);
+                    kategori3.addActionListener(this);                          //test
                     kategori3.setText((response.substring(7)));
+                }
+                else if (response.startsWith("TABORTKNAPP")) {
+                    kategori1.setVisible(false);
+                    kategori2.setVisible(false);
+                    kategori3.setVisible(false);
+
+
                 }
 
 
@@ -124,5 +137,15 @@ public class QuizClient extends JFrame implements Serializable {
             qc.play();
 
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == kategori1) {
+
+            char skicka = 'y';
+            out.println(skicka);
+        }
+
     }
 }
