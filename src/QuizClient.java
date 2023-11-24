@@ -146,6 +146,11 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             char skicka = 'y';
             out.println(skicka);
         }
+        if (e.getSource() == kategori3) {
+
+            char skickaaa = 'm';
+            out.println(skickaaa);
+        }
 
     }
 }

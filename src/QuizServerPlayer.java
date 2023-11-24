@@ -62,18 +62,34 @@ public class QuizServerPlayer extends Thread{
             output.println("KNAPP3 ha variabler eller?");
 
             try {
+                while (true) {
                 char inputChar = (char) input.read();
                 if (inputChar == 'y') {
                     output.println("TABORTKNAPP");
                     output.println("MESSAGE Du hade RÄTT");
-                }
+                    opponent.output.println("MESSAGE bra jobbat!!!!");
+                    break;
+                }}
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
+            opponent.output.println("KNAPP3 HAHA vi klarade det!!!!");
+            try {
+                char inputChar = (char) opponent.input.read();
+                if (inputChar == 'm') {
+                    opponent.output.println("MESSAGE DU tryckte på knappen");
+                    opponent.output.println("TABORTKNAPP");
+                    Thread.sleep(5000);
+                    opponent.output.println("MESSAGE nu får du vänta igen:)");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-            hello = "hej";
-
+            output.println("KNAPP2 HEJ HEJ");
 
 
 
@@ -81,7 +97,7 @@ public class QuizServerPlayer extends Thread{
 
         if (tag == 'Y') {
             output.println("MESSAGE Väntar på din tur...");
-
+/*
 
             while (true) {
                 if (hello.equalsIgnoreCase("hej")) {
@@ -91,7 +107,7 @@ public class QuizServerPlayer extends Thread{
 
             output.println("MESSAGE NU HÄNDE DET");
         }
-
+*/
         // ...
     }
-}
+}}
