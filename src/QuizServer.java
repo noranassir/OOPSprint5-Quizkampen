@@ -11,7 +11,7 @@ public class QuizServer extends Thread implements Serializable{
     JButton jb = new JButton("Hej");
 
     String hej;
-
+   //
 
     Socket s;
 
