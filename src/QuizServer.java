@@ -10,6 +10,8 @@ public class QuizServer extends Thread implements Serializable{
     JPanel jp = new JPanel();
     JButton jb = new JButton("Hej");
 
+    String hej;
+
 
     Socket s;
 
@@ -19,6 +21,9 @@ public class QuizServer extends Thread implements Serializable{
     }
 
     public QuizServer(){}
+
+
+
 
     //ServerSocket sSocket = new ServerSocket(5554);
     //Socket socket = sSocket.accept();
