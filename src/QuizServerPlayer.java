@@ -66,6 +66,7 @@ public class QuizServerPlayer extends Thread{
                 if (inputChar == 'y') {
                     output.println("TABORTKNAPP");
                     output.println("MESSAGE Du hade RÄTT");
+                    opponent.output.println("KNAPP1 det är din tur");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
