@@ -1,11 +1,9 @@
 import javax.swing.*;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Game {
 
@@ -13,10 +11,12 @@ public class Game {
     private String[][] quizCategory = new String[50][2];
     private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
     private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
+    private int propertiesAmountOfQuestions;  //IN
+    private int propertiesAmountOfRounds; //IN
 
     public void ImportQuestions() throws IOException {
 
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))){
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("/Users/pontuslundin/Desktop/javamapp/Objektorienterad Programmering/OOPSprint5-Quizkampen/src/Quiz.txt"))){
 
             while(true){
                 String input = bufferedReader.readLine();
@@ -104,6 +104,17 @@ public class Game {
     }
 
     public void QuestionOptions() {
+
+        Properties p = new Properties();    //Glöm inte kolla path till quiz och Settings
+        try {
+            p.load(new FileInputStream("/Users/pontuslundin/Desktop/javamapp/Objektorienterad Programmering/OOPSprint5-Quizkampen/src/Settings.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        propertiesAmountOfQuestions = Integer.parseInt(p.getProperty("amountOfQuestions", "3"));
+        propertiesAmountOfRounds = Integer.parseInt(p.getProperty("amountOfRounds", "3"));
+
         int amountOfCategories = 0;
         List<Integer> categoryListRandom = new ArrayList<>();
         for (int i = 0; i < quizCategory.length; i++) {
@@ -119,7 +130,7 @@ public class Game {
 
         List<String>amountOfCorrectAnswers = new ArrayList<>();
 
-        for (int i = 0; i < 6; i++) { //Antal kategorier per runda
+        for (int i = 0; i < propertiesAmountOfRounds; i++) { //Antal kategorier per runda
 
 
             Collections.shuffle(categoryListRandom, new Random());
@@ -156,7 +167,7 @@ public class Game {
             List<String>gameQuestions = new ArrayList<>();
             List<Answer>gameAnswers = new ArrayList<>();
 
-            for (int j = 0; j < 3; j++) { //Antal frågor
+            for (int j = 0; j < propertiesAmountOfQuestions; j++) { //Antal frågor
                 String tempStringQuestion = "";
 
 
