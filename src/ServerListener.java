@@ -39,7 +39,14 @@ public class ServerListener {
 
     public static void main(String[] args) {
 
+        QuizServer game = new QuizServer();
+        String yo = "hej";
+        yo = game.testingMethod(yo);
+
+
+        System.out.println(yo);
         ServerListener sl = new ServerListener();
+
 
     }
 }

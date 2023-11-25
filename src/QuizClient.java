@@ -10,26 +10,29 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
 
     private JFrame frame = new JFrame("Quizkampen");
     private JLabel messageLabel = new JLabel("");
-    private JButton kategori1 = new JButton("");
-    private JButton kategori2 = new JButton("");
-    private JButton kategori3 = new JButton("");
-    private JButton alternativ1 = new JButton("");
-    private JButton alternativ2 = new JButton("");
-    private JButton alternativ3 = new JButton("");
-    private JButton alternativ4 = new JButton("");
-
-
+    private JButton[] categoryButtons = new JButton[3];
+    private JButton[] answerButtons = new JButton[4];
 
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
 
-    public QuizClient(String serverAddress) throws Exception {
-        socket = new Socket(serverAddress, 5554);
-        out = new PrintWriter(socket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        {
 
+    public QuizClient(String serverAddress) throws Exception {
+        try {
+            socket = new Socket(serverAddress, 5554);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            initializeUI();
+            play();
+        }
+     catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+        /*
+        {
 
             messageLabel.setText("Väntar på spelare");
             JPanel board = new JPanel();
@@ -49,24 +52,143 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             board.add(kategori3);
 
 
-        }
-    }
+        } */
 
+
+
+    private void initializeUI() {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(true);
+
+        JPanel board = new JPanel();
+        frame.getContentPane().add(board);
+
+        messageLabel.setText("Waiting for players...");
+        frame.getContentPane().add(messageLabel, "North");
+
+        for (int i = 0; i < categoryButtons.length; i++) {
+            categoryButtons[i] = new JButton();
+            categoryButtons[i].setVisible(false);
+            categoryButtons[i].addActionListener(this);
+            board.add(categoryButtons[i]);
+        }
+
+        for (int i = 0; i < answerButtons.length; i++) {
+            answerButtons[i] = new JButton();
+            answerButtons[i].setVisible(false);
+            answerButtons[i].addActionListener(this);
+            board.add(answerButtons[i]);
+        }
+
+        frame.setVisible(true);
+    }
 
     public void play() throws Exception {
         String response;
         char tag = 'S';
-        char opponenttag = 'P';
+        // char opponenttag = 'P';
 
         try {
             response = in.readLine();
             if (response.startsWith("Välkommen")) {
                 tag = response.charAt(9);
-                opponenttag = (tag == 'X' ? 'Y' : 'X');
+               // opponenttag = (tag == 'X' ? 'Y' : 'X');
                 frame.setTitle("Quizkampen - Spelare " + tag);
-
             }
 
+
+            while (true) {
+                response = in.readLine();    //den kommer fortsätta läsa vad servern ger oss, olika alternativ händer beroende på hur spelet utvecklas
+                if (response.startsWith("MESSAGE")) {
+                    messageLabel.setText(response.substring(8));
+                }
+                else if (response.startsWith("CATEGORY")) {
+                    updateCategoryButtons(response.substring(8));
+                }
+                else if (response.startsWith("ANSWERS")) {
+                    updateAnswerButtons(response.substring(8));
+                } else if (response.startsWith("REMOVE_BUTTONS")) {
+                    hideAllButtons();
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    private void updateCategoryButtons(String categories) {
+        String[] categoryArray = categories.split(",");
+        for (int i = 0; i < categoryButtons.length; i++) {
+            if (i < categoryArray.length) {
+                categoryButtons[i].setVisible(true);
+                categoryButtons[i].setText(categoryArray[i]);
+            } else {
+                categoryButtons[i].setVisible(false);
+            }
+        }
+    }
+
+    private void updateAnswerButtons(String answers) {
+        String[] answerArray = answers.split(",");
+        for (int i = 0; i < answerButtons.length; i++) {
+            if (i < answerArray.length) {
+                answerButtons[i].setVisible(true);
+                answerButtons[i].setText(answerArray[i]);
+            } else {
+                answerButtons[i].setVisible(false);
+            }
+        }
+    }
+
+    private void hideAllButtons() {
+        for (JButton button : categoryButtons) {
+            button.setVisible(false);
+        }
+        for (JButton button : answerButtons) {
+            button.setVisible(false);
+        }
+    }
+
+
+
+
+
+
+
+    public static void main(String[] args) throws Exception {
+
+        while(true) {
+
+            String serverAddress = "127.0.0.1";
+            QuizClient qc = new QuizClient(serverAddress);
+            /*qc.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            qc.frame.setSize(600,400);
+            qc.frame.setVisible(true);
+            qc.frame.setResizable(true);
+            qc.play(); */
+
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton clickedButton = (JButton) e.getSource();
+        out.println(clickedButton.getText());             //skickar ut texten på knappen
+    }
+}
+
+
+
+
+
+
+
+
+
+/*
 
             while (true) {
                 response = in.readLine();    //den kommer fortsätta läsa vad servern ger oss, olika alternativ händer beroende på hur spelet utvecklas
@@ -92,65 +214,23 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                     kategori1.setVisible(false);
                     kategori2.setVisible(false);
                     kategori3.setVisible(false);
-
-
                 }
-
-
-
-
-
-
             }
-
-
-
-
-
-
-
-
 
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-
-    }
-
+ */
 
 
 
 
 
-    public static void main(String[] args) throws Exception {
 
-        while(true) {
 
-            String serverAddress = "127.0.0.1";
-            QuizClient qc = new QuizClient(serverAddress);
-            qc.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            qc.frame.setSize(600,400);
-            qc.frame.setVisible(true);
-            qc.frame.setResizable(true);
-            qc.play();
 
-        }
-    }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == kategori1) {
 
-            char skicka = 'y';
-            out.println(skicka);
-        }
-        if (e.getSource() == kategori3) {
 
-            char skickaaa = 'm';
-            out.println(skickaaa);
-        }
-
-    }
-}

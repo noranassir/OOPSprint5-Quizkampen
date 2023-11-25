@@ -18,7 +18,9 @@ public class QuizServerPlayer extends Thread{
 
     QuizServer game;
 
-    boolean playerturn;
+    //boolean playerturn;
+
+    String kategori = "MESSAGE Välj en kategori!";
 
 
 
@@ -53,13 +55,14 @@ public class QuizServerPlayer extends Thread{
 
 
         output.println("MESSAGE all players connected");
-        String hello = "";
+        String [] kategorival;
 
         if (tag == 'X') {
-            output.println("MESSAGE Välj en kategori!");
-            output.println("KNAPP1 Istället för denna");
-            output.println("KNAPP2 text så ska vi");
-            output.println("KNAPP3 ha variabler eller?");
+            printCategoryMessage();
+
+
+
+            //output.println("CATEGORY" + cat1 + cat2 + cat2);
 
             try {
                 while (true) {
@@ -110,4 +113,19 @@ public class QuizServerPlayer extends Thread{
 */
         // ...
     }
-}}
+}
+    public void printCategoryMessage() {
+        output.println(kategori);
+        output.println("CATEGORY Istället för denna, text så ska vi, ha variabler eller?");
+
+    }
+
+
+
+
+
+
+
+
+
+}

@@ -11,7 +11,7 @@ public class QuizServer extends Thread implements Serializable{
     JButton jb = new JButton("Hej");
 
     String hej;
-   //
+
 
     Socket s;
 
@@ -22,6 +22,15 @@ public class QuizServer extends Thread implements Serializable{
 
     public QuizServer(){}
 
+
+    public String testingMethod (String heyyy) {
+
+        heyyy = "nope";
+
+        return heyyy;
+
+
+    }
 
 
 
@@ -41,8 +50,6 @@ public class QuizServer extends Thread implements Serializable{
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-        {
         }
     }
 
