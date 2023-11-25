@@ -28,13 +28,16 @@ public class Game {
 
 
 
-
     //Diverse variabler för multipla metoder
     int amountOfCategories = 0;
     int categorySelected = 0;
     private int selectedCategory = 0;
 
 
+    //gjorde en getter for categorylist
+    public ArrayList<Category> getQuizCategoryList() {
+        return quizCategoryList;
+    }
 
 
     public void ImportQuestions() throws IOException {

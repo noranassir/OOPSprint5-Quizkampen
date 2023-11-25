@@ -10,7 +10,9 @@ public class QuizServer extends Thread implements Serializable{
     JPanel jp = new JPanel();
     JButton jb = new JButton("Hej");
 
-    String hej;
+    String kategori = "MESSAGE Välj en kategori!";
+
+
 
 
     Socket s;
@@ -33,12 +35,18 @@ public class QuizServer extends Thread implements Serializable{
     }
 
 
+    public void printCategoryMessage() {
+    //  output.println("CATEGORY Istället för denna, text så ska vi, ha variabler eller?");
+
+    }
+
+
 
     //ServerSocket sSocket = new ServerSocket(5554);
     //Socket socket = sSocket.accept();
 
 
-    public void run() {
+   /* public void run() {
 
         try (
                 ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
@@ -52,5 +60,5 @@ public class QuizServer extends Thread implements Serializable{
             throw new RuntimeException(e);
         }
     }
-
+ */
 }

@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Objects;
 
 /* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
  */
@@ -18,9 +20,13 @@ public class QuizServerPlayer extends Thread{
 
     QuizServer game;
 
+    Game gameklass;
+
     //boolean playerturn;
 
     String kategori = "MESSAGE Välj en kategori!";
+
+
 
 
 
@@ -58,6 +64,7 @@ public class QuizServerPlayer extends Thread{
         String [] kategorival;
 
         if (tag == 'X') {
+            // game.printCategoryMessage();
             printCategoryMessage();
 
 
@@ -66,9 +73,9 @@ public class QuizServerPlayer extends Thread{
 
             try {
                 while (true) {
-                char inputChar = (char) input.read();
-                if (inputChar == 'y') {
-                    output.println("TABORTKNAPP");
+                String inputtext = input.readLine();
+                if (Objects.equals(inputtext, " Egypten")) {
+                    output.println("REMOVE_BUTTONS");
                     output.println("MESSAGE Du hade RÄTT");
                     opponent.output.println("MESSAGE bra jobbat!!!!");
                     break;
@@ -115,8 +122,17 @@ public class QuizServerPlayer extends Thread{
     }
 }
     public void printCategoryMessage() {
+        Game game2 = new Game();
+        ArrayList<Category> categorylist;
+
+        categorylist = game2.getQuizCategoryList();
+
         output.println(kategori);
-        output.println("CATEGORY Istället för denna, text så ska vi, ha variabler eller?");
+        output.println("CATEGORY 2000, Egypten, Hannamontana");
+        output.println(categorylist);
+        //opponent.output.println("CATEGORY Istället för denna, text så ska vi, ha variabler eller?");
+
+
 
     }
 
