@@ -18,7 +18,7 @@ public class QuizServerPlayer extends Thread{
     BufferedReader input;
     PrintWriter output;
 
-    QuizServer game;
+    Game game;
 
     Game gameklass;
 
@@ -30,7 +30,7 @@ public class QuizServerPlayer extends Thread{
 
 
 
-    public QuizServerPlayer(Socket socket, char tag, QuizServer game){
+    public QuizServerPlayer(Socket socket, char tag, Game game){
         this.socket = socket;
         this.tag = tag;
         this.game = game;
@@ -59,6 +59,15 @@ public class QuizServerPlayer extends Thread{
 
     public void run() {
 
+        try {
+            game.ImportQuestions();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        game.SortQuestions(); //!!!!!!!!! gör att knappar göms
+       // game.AmountOfCategories();
+        // game.QuizGame();
+
 
         output.println("MESSAGE all players connected");
         String [] kategorival;
@@ -74,7 +83,7 @@ public class QuizServerPlayer extends Thread{
             try {
                 while (true) {
                 String inputtext = input.readLine();
-                if (Objects.equals(inputtext, " Egypten")) {
+                if (Objects.equals(inputtext, " Egypten")) {           //detta ska vara variabler istället för hårdkodning 
                     output.println("REMOVE_BUTTONS");
                     output.println("MESSAGE Du hade RÄTT");
                     opponent.output.println("MESSAGE bra jobbat!!!!");

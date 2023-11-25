@@ -10,7 +10,7 @@ public class ServerListener {
 
             while(true){
 
-                QuizServer game = new QuizServer();
+                Game game = new Game();
 
                 QuizServerPlayer playerX = new QuizServerPlayer(serverS.accept(), 'X', game);
                 QuizServerPlayer playerY = new QuizServerPlayer(serverS.accept(), 'Y', game);
