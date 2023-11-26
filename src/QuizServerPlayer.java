@@ -4,11 +4,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Random;
 
 /* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
  */
-public class QuizServerPlayer extends Thread{
+public class QuizServerPlayer extends Thread {
 
 
     char tag;
@@ -27,10 +29,7 @@ public class QuizServerPlayer extends Thread{
     String kategori = "MESSAGE Välj en kategori!";
 
 
-
-
-
-    public QuizServerPlayer(Socket socket, char tag, Game game){
+    public QuizServerPlayer(Socket socket, char tag, Game game) {
         this.socket = socket;
         this.tag = tag;
         this.game = game;
@@ -65,30 +64,30 @@ public class QuizServerPlayer extends Thread{
             throw new RuntimeException(e);
         }
         game.SortQuestions(); //!!!!!!!!! gör att knappar göms
-       // game.AmountOfCategories();
+        // game.AmountOfCategories();
         // game.QuizGame();
 
 
         output.println("MESSAGE all players connected");
-        String [] kategorival;
+        String[] kategorival;
 
         if (tag == 'X') {
             // game.printCategoryMessage();
             printCategoryMessage();
 
 
-
             //output.println("CATEGORY" + cat1 + cat2 + cat2);
 
             try {
                 while (true) {
-                String inputtext = input.readLine();
-                if (Objects.equals(inputtext, " Egypten")) {           //detta ska vara variabler istället för hårdkodning 
-                    output.println("REMOVE_BUTTONS");
-                    output.println("MESSAGE Du hade RÄTT");
-                    opponent.output.println("MESSAGE bra jobbat!!!!");
-                    break;
-                }}
+                    String inputtext = input.readLine();
+                    if (Objects.equals(inputtext, " Egypten")) {           //detta ska vara variabler istället för hårdkodning
+                        output.println("REMOVE_BUTTONS");
+                        output.println("MESSAGE Du hade RÄTT");
+                        opponent.output.println("MESSAGE bra jobbat!!!!");
+                        break;
+                    }
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -111,7 +110,6 @@ public class QuizServerPlayer extends Thread{
             output.println("KNAPP2 HEJ HEJ");
 
 
-
         }
 
         if (tag == 'Y') {
@@ -127,30 +125,27 @@ public class QuizServerPlayer extends Thread{
             output.println("MESSAGE NU HÄNDE DET");
         }
 */
-        // ...
+            // ...
+        }
     }
-}
+
     public void printCategoryMessage() {
-        Game game2 = new Game();
-        ArrayList<Category> categorylist;
-
-        categorylist = game2.getQuizCategoryList();
-
-        output.println(kategori);
-        output.println("CATEGORY 2000, Egypten, Hannamontana");
-        output.println(categorylist);
-        //opponent.output.println("CATEGORY Istället för denna, text så ska vi, ha variabler eller?");
+        ArrayList<Category> categorylist = game.getQuizCategoryList();
+        Collections.shuffle(categorylist, new Random());
 
 
+        for (int i = 0; i < categorylist.size(); i++) {
+            Collections.shuffle(categorylist, new Random());
+            output.println("CATEGORY " + categorylist.get(i).getCategoryName() + ", " + categorylist.get(i + 1).getCategoryName());
+
+
+            //output.println(kategori);
+            //output.println("CATEGORY 2000, Egypten, Hannamontana");
+            //output.println(categorylist);
+            //opponent.output.println("CATEGORY Istället för denna, text så ska vi, ha variabler eller?");
+
+
+        }
 
     }
-
-
-
-
-
-
-
-
-
 }
