@@ -9,21 +9,21 @@ import java.util.Random;
 public class Game {
 
     //Originallistor och viktiga variabler, RÖR EJ!
-    private ArrayList<String> importList = new ArrayList<String>();
-    private ArrayList<Category> quizCategoryList = new ArrayList<>();
-    private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
-    private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
-    private int amountOfRounds = 6;
-    private int amountOfQuestions = 3;
+    public ArrayList<String> importList = new ArrayList<String>();
+    public ArrayList<Category> quizCategoryList = new ArrayList<>();
+    public ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
+    public ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
+    public int amountOfRounds = 6;
+    public int amountOfQuestions = 3;
 
 
 
     //Temporära listor för att modifieras
 
-    private ArrayList<Integer> categoryListRandom = new ArrayList<>();
-    private ArrayList<Question> quizQuestionRandomiser = new ArrayList<>();
-    private ArrayList<Answer> quizAnswersAfterRand = new ArrayList<>();
-    private ArrayList<Answer> randomisedAnswers = new ArrayList<>();
+    public ArrayList<Integer> categoryListRandom = new ArrayList<>();
+    public ArrayList<Question> quizQuestionRandomiser = new ArrayList<>();
+    public ArrayList<Answer> quizAnswersAfterRand = new ArrayList<>();
+    public ArrayList<Answer> randomisedAnswers = new ArrayList<>();
 
 
 
@@ -31,7 +31,7 @@ public class Game {
     //Diverse variabler för multipla metoder
     int amountOfCategories = 0;
     int categorySelected = 0;
-    private int selectedCategory = 0;
+    public int selectedCategory = 0;
 
 
     //gjorde en getter for categorylist
