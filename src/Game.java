@@ -236,8 +236,4 @@ public class Game {
         }
         JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
     }
-
-
-
-
 }
