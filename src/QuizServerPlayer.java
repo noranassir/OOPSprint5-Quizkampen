@@ -21,7 +21,6 @@ public class QuizServerPlayer extends Thread {
     QuizServer game;
 
 
-
     private ArrayList<String> importList = new ArrayList<String>();
     private ArrayList<Category> quizCategoryList = new ArrayList<>();
     private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
@@ -69,8 +68,6 @@ public class QuizServerPlayer extends Thread {
         }
 
     }
-
-
 
 
     public void SortQuestions() {
@@ -136,8 +133,6 @@ public class QuizServerPlayer extends Thread {
     }
 
 
-
-
     public void AmountOfCategories() {
         amountOfCategories = 0;
 
@@ -148,18 +143,18 @@ public class QuizServerPlayer extends Thread {
     }
 
 
-
     public void CategorySelection() throws IOException {       //ÄNDRAT SÅ DEN ÄR CLIENT VÄNLIG
+
 
         Collections.shuffle(categoryListRandom, new Random());
         int categorySelector = 0;
-           //     quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() +
-           //      quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
-           //     quizCategoryList.get(categoryListRandom.get(2)).getCategoryName();
+        //     quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() +
+        //      quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
+        //     quizCategoryList.get(categoryListRandom.get(2)).getCategoryName();
 
         output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
         output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +
-                        quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
+                quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
                 quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
 
         while (true) {
@@ -182,26 +177,69 @@ public class QuizServerPlayer extends Thread {
         }
 
         //try{
-         //   categorySelected = Integer.parseInt(categorySelector);
-       // }
+        //   categorySelected = Integer.parseInt(categorySelector);
+        // }
         //catch (NumberFormatException e){
-         //   e.printStackTrace();
+        //   e.printStackTrace();
 
         categorySelected = categorySelector;
-        categorySelected = categorySelected -1;
+        categorySelected = categorySelected - 1;
         selectedCategory = categoryListRandom.get(categorySelected);
-
-
 
     }
 
 
+    public void CategorySelectionY() throws IOException {       //ÄNDRAT SÅ DEN ÄR CLIENT VÄNLIG
 
-    public void ImportSelectedQuestions(){
+
+        //Collections.shuffle(categoryListRandom, new Random());
+        int categorySelector = 0;
+        //     quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() +
+        //      quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
+        //     quizCategoryList.get(categoryListRandom.get(2)).getCategoryName();
+
+        output.println("MESSAGE välj en kategori!YYYYY");                            //väljer bland knappar
+        output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +           //PROBLEM!
+                quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
+                quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
+
+        while (true) {
+            String inputtext = input.readLine().trim();
+            if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(0)).getCategoryName())) {
+
+                categorySelector = 1;
+                output.println("REMOVE_BUTTONS");
+                break;
+            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(1)).getCategoryName())) {
+                categorySelector = 2;
+                output.println("REMOVE_BUTTONS");
+                break;
+
+            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(2)).getCategoryName())) {
+                categorySelector = 3;
+                output.println("REMOVE_BUTTONS");
+                break;
+            }
+        }
+
+        //try{
+        //   categorySelected = Integer.parseInt(categorySelector);
+        // }
+        //catch (NumberFormatException e){
+        //   e.printStackTrace();
+
+        categorySelected = categorySelector;
+        categorySelected = categorySelected - 1;
+        selectedCategory = categoryListRandom.get(categorySelected);
+
+    }
+
+
+    public void ImportSelectedQuestions() {
         quizQuestionRandomiser.clear();
-        for(Question q : quizQuestionsList){
-            int temp1 = q.getQuizCategory()-1;
-            if(temp1 == selectedCategory){
+        for (Question q : quizQuestionsList) {
+            int temp1 = q.getQuizCategory() - 1;
+            if (temp1 == selectedCategory) {
                 quizQuestionRandomiser.add(q);
             }
         }
@@ -210,14 +248,12 @@ public class QuizServerPlayer extends Thread {
     }
 
 
-
-
-    public void ImportAnswers(){
-        for(Question q : quizQuestionRandomiser){
+    public void ImportAnswers() {
+        for (Question q : quizQuestionRandomiser) {
             int temp1 = q.getQuizCategory();
             int temp2 = q.getQuestionNumber();
-            for(Answer a : quizAnswersList){
-                if(temp1 == a.getQuizCategory() && temp2 == a.getQuestionNumber()){
+            for (Answer a : quizAnswersList) {
+                if (temp1 == a.getQuizCategory() && temp2 == a.getQuestionNumber()) {
                     quizAnswersAfterRand.add(a);
                 }
             }
@@ -226,9 +262,7 @@ public class QuizServerPlayer extends Thread {
     }
 
 
-
-
-    public void RandomiseAnswers(){
+    public void RandomiseAnswers() {
 
         randomisedAnswers.clear();
         for (int i = 0; i < 4; i++) {
@@ -239,10 +273,6 @@ public class QuizServerPlayer extends Thread {
             quizAnswersAfterRand.remove(0);
         }
     }
-
-
-
-
 
 
     public void QuizGame() throws IOException {
@@ -312,12 +342,62 @@ public class QuizServerPlayer extends Thread {
             quizAnswersAfterRand.clear();
             categoryListRandom.remove(categorySelected);
             break;                                              //bryter sig ur första
-        }
-        JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
-
-
 
         }
+        // JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
+
+        //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
+        opponentturn();      //INTRESSANT LOGIK
+    }
+
+
+
+
+
+    public void opponentturn() throws IOException {
+        int correctAnswersPerRound = 0;
+
+        for (int j = 0; j < amountOfQuestions; j++) {
+            int userAnswerInt = 0;    //SPARAR SVAR
+            String inputtext = "";
+
+            opponent.output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
+            opponent.output.println("ANSWERS " + randomisedAnswers.get(0).getQuizAnswer() + ", " + randomisedAnswers.get(1).getQuizAnswer() + ", " +
+                    randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
+
+            while (true) {
+                inputtext = opponent.input.readLine().trim();
+                if (inputtext.equals(randomisedAnswers.get(0).getQuizAnswer())) {
+                    userAnswerInt = 1;
+                    break;
+                } else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
+                    userAnswerInt = 2;
+                    break;
+                } else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
+                    userAnswerInt = 3;
+                    break;
+                } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
+                    userAnswerInt = 4;
+                    break;
+                }
+            }
+
+
+            userAnswerInt = userAnswerInt - 1;
+            Object tempAnswer = randomisedAnswers.get(userAnswerInt);
+            for (Answer a : quizAnswersList) {
+                if (tempAnswer == a) {
+                    if (a.getCorrectAnswer() == true) {
+                        correctAnswersPerRound++;
+                    }
+                }
+            }
+        }
+
+
+
+
+    }
 
 
 
@@ -328,17 +408,78 @@ public class QuizServerPlayer extends Thread {
 
 
 
+    public void QuizGameY() throws IOException {
 
 
+        int totalCorrectAnswers = 0;
+        for (int i = 0; i < amountOfRounds; i++) {
+
+            CategorySelectionY();
+
+            int correctAnswersPerRound = 0;
+            ImportSelectedQuestions();
+
+            for (int j = 0; j < amountOfQuestions; j++) {
+
+                ImportAnswers();
+                RandomiseAnswers();
 
 
+                int userAnswerInt = 0;    //SPARAR SVAR
+                String inputtext = "";
+
+                output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
+                output.println("ANSWERS " + randomisedAnswers.get(0).getQuizAnswer() + ", " + randomisedAnswers.get(1).getQuizAnswer() + ", " +
+                        randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
+
+                while (true) {
+                    inputtext = input.readLine().trim();
+                    if (inputtext.equals(randomisedAnswers.get(0).getQuizAnswer())) {
+                        userAnswerInt = 1;
+                        break;
+                    } else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
+                        userAnswerInt = 2;
+                        break;
+                    } else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
+                        userAnswerInt = 3;
+                        break;
+                    } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
+                        userAnswerInt = 4;
+                        break;
+                    }
+                }
 
 
+                userAnswerInt = userAnswerInt - 1;
+                Object tempAnswer = randomisedAnswers.get(userAnswerInt);
+                for (Answer a : quizAnswersList) {
+                    if (tempAnswer == a) {
+                        if (a.getCorrectAnswer() == true) {
+                            correctAnswersPerRound++;
+                        }
+                    }
+                }
+            }
 
 
+            while (true) {
+                output.println("REMOVE_BUTTONS");
+                output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
+                output.println("CATEGORY Bra jobbat!");
+                input.readLine();
+                break;
+            }
+
+            //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
+            totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
+            quizAnswersAfterRand.clear();
+            categoryListRandom.remove(categorySelected);
+            break;                                              //bryter sig ur första
+        }
+        // JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
 
 
-
+    }
 
 
     public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
@@ -366,12 +507,6 @@ public class QuizServerPlayer extends Thread {
     }
 
 
-
-
-
-
-
-
     public void run() {
 
         //glöm inte opponent.output ger Y saker
@@ -386,29 +521,40 @@ public class QuizServerPlayer extends Thread {
             SortQuestions();
             AmountOfCategories();
 
-            try {
-                CategorySelection();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            // try {
+            // CategorySelection();
+            //} catch (IOException e) {
+            //    throw new RuntimeException(e);
+            //  }
             try {
                 QuizGame();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            try {
-                opponent.QuizGame();                //får moståndaren att spela
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+           // try {
+             //   opponent.QuizGame();                //får moståndaren att spela
+           // } catch (IOException e) {
+             //   throw new RuntimeException(e);
+            //}
 
 
         }
 
         if (tag == 'Y') {
             output.println("MESSAGE Väntar på din tur...");
+            output.println("ANSWERS HEY");
+            ImportSelectedQuestions();
+            for (int j = 0; j < amountOfQuestions; j++) {
+                ImportAnswers();
+               RandomiseAnswers();
+                try {
+                    opponent.QuizGame();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
+            }
         }
     }
-    }
+}
 
