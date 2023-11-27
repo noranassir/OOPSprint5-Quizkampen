@@ -311,9 +311,19 @@ public class QuizServerPlayer extends Thread {
 
 
     public void opponentturn() throws IOException {
+
+
+        int totalCorrectAnswers = 0;
         int correctAnswersPerRound = 0;
 
+
+
         for (int j = 0; j < amountOfQuestions; j++) {
+
+
+            ImportAnswers();
+            RandomiseAnswers();
+
             int userAnswerInt = 0;    //SPARAR SVAR
             String inputtext = "";
 
@@ -349,6 +359,28 @@ public class QuizServerPlayer extends Thread {
                 }
             }
         }
+
+
+        while (true) {
+            opponent.output.println("REMOVE_BUTTONS");
+            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
+            opponent.output.println("CATEGORY Bra jobbat!");
+            opponent.input.readLine();
+            break;
+        }
+
+        //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
+        totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
+        quizAnswersAfterRand.clear();
+        categoryListRandom.remove(categorySelected);
+
+
+
+
+
+
+
+
 
     }
 
@@ -415,6 +447,7 @@ public class QuizServerPlayer extends Thread {
 
         if (tag == 'Y') {
             output.println("MESSAGE Väntar på din tur...");
+
 
 
             }
