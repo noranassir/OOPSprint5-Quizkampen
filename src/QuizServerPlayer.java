@@ -247,8 +247,10 @@ public class QuizServerPlayer extends Thread {
 
     public void QuizGame() throws IOException {
 
+
         int totalCorrectAnswers = 0;
         for (int i = 0; i < amountOfRounds; i++) {
+
             CategorySelection();
 
             int correctAnswersPerRound = 0;
@@ -265,41 +267,36 @@ public class QuizServerPlayer extends Thread {
 
                 output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
                 output.println("ANSWERS " + randomisedAnswers.get(0).getQuizAnswer() + ", " + randomisedAnswers.get(1).getQuizAnswer() + ", " +
-                                randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
+                        randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
 
                 while (true) {
                     inputtext = input.readLine().trim();
                     if (inputtext.equals(randomisedAnswers.get(0).getQuizAnswer())) {
                         userAnswerInt = 1;
                         break;
-                    }
-                    else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
+                    } else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
                         userAnswerInt = 2;
                         break;
-                    }
-                    else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
+                    } else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
                         userAnswerInt = 3;
                         break;
-                    }
-                    else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
+                    } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
                         userAnswerInt = 4;
                         break;
                     }
                 }
 
 
-                userAnswerInt = userAnswerInt -1;
+                userAnswerInt = userAnswerInt - 1;
                 Object tempAnswer = randomisedAnswers.get(userAnswerInt);
-                for(Answer a : quizAnswersList){
-                    if(tempAnswer == a){
-                        if(a.getCorrectAnswer() == true){
+                for (Answer a : quizAnswersList) {
+                    if (tempAnswer == a) {
+                        if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRound++;
                         }
                     }
                 }
             }
-
-
 
 
             while (true) {
@@ -314,9 +311,16 @@ public class QuizServerPlayer extends Thread {
             totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
             quizAnswersAfterRand.clear();
             categoryListRandom.remove(categorySelected);
+            break;                                              //bryter sig ur första
         }
         JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
-    }
+
+
+
+        }
+
+
+
 
 
 
@@ -381,11 +385,23 @@ public class QuizServerPlayer extends Thread {
             }
             SortQuestions();
             AmountOfCategories();
+
+            try {
+                CategorySelection();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             try {
                 QuizGame();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            try {
+                opponent.QuizGame();                //får moståndaren att spela
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
 
         }
 
