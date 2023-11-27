@@ -17,7 +17,7 @@ public class ServerListener {
 
                 playerX.setOpponent(playerY);
                 playerY.setOpponent(playerX);
-                //game.currentPlayer = playerX;      //currentPlayer metod, är första spelaren
+                game.currentPlayer = playerX;  //Starta med spelare X
                 playerX.start();
                 playerY.start();
 

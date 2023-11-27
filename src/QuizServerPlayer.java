@@ -374,6 +374,7 @@ public class QuizServerPlayer extends Thread {
             opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
             opponent.output.println("CATEGORY Bra jobbat!");
             opponent.input.readLine();
+            opponent.QuizGame();
             break;
         }
 
