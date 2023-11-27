@@ -231,6 +231,8 @@ public class QuizServerPlayer extends Thread {
     }
 
 
+
+
     public void QuizGame() throws IOException {
 
 
@@ -303,8 +305,14 @@ public class QuizServerPlayer extends Thread {
         // JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
 
         //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
+
         opponentturn();      //INTRESSANT LOGIK
     }
+
+
+
+
+
 
 
 
@@ -315,7 +323,6 @@ public class QuizServerPlayer extends Thread {
 
         int totalCorrectAnswers = 0;
         int correctAnswersPerRound = 0;
-
 
 
         for (int j = 0; j < amountOfQuestions; j++) {
@@ -361,6 +368,7 @@ public class QuizServerPlayer extends Thread {
         }
 
 
+
         while (true) {
             opponent.output.println("REMOVE_BUTTONS");
             opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
@@ -373,14 +381,6 @@ public class QuizServerPlayer extends Thread {
         totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
         quizAnswersAfterRand.clear();
         categoryListRandom.remove(categorySelected);
-
-
-
-
-
-
-
-
 
     }
 
