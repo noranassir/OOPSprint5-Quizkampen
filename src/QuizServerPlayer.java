@@ -415,19 +415,10 @@ public class QuizServerPlayer extends Thread {
 
         if (tag == 'Y') {
             output.println("MESSAGE Väntar på din tur...");
-            output.println("ANSWERS HEY");
-            ImportSelectedQuestions();
-            for (int j = 0; j < amountOfQuestions; j++) {
-                ImportAnswers();
-               RandomiseAnswers();
-                try {
-                    opponent.QuizGame();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+
 
             }
         }
     }
-}
+
 
