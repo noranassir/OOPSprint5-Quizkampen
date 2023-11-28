@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 import java.util.Random;
 
 /* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
@@ -23,8 +24,8 @@ public class QuizServerPlayer extends Thread {
     private ArrayList<Category> quizCategoryList = new ArrayList<>();
     private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
     private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
-    private int amountOfRounds = 2;
-    private int amountOfQuestions = 3;
+    private int amountOfRounds;
+    private int amountOfQuestions;
 
 
     //Temporära listor för att modifieras
@@ -181,28 +182,19 @@ public class QuizServerPlayer extends Thread {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  //här börjar X spelaren, Y spelaren är fast på väntar på din tur (när tråden körs)
 
     public void QuizGame() throws IOException {
 
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("/Users/pontuslundin/Desktop/javamapp/Objektorienterad Programmering/OOPSprint5-Quizkampen/src/Settings.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions", "3"));
+        amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds", "3"));
 
         int totalCorrectAnswersX = 0;
         int totalCorrectAnswersY = 0;
@@ -337,10 +329,6 @@ public class QuizServerPlayer extends Thread {
 
     }
 
-
-
-
-
   //här för Y spelaren köra med samma frågor som X hade
     public int opponentturn(int totalcorrectY, int totalanswerroundX) throws IOException {
 
@@ -411,22 +399,6 @@ public class QuizServerPlayer extends Thread {
         return totalCorrectAnswersY;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //denna är identisk till QuizGame, förutom att det är Y som väljer kategori
@@ -509,10 +481,6 @@ public class QuizServerPlayer extends Thread {
               return totalCorrectAnswersY;
     }
 
-
-
-
-
       //som sagt y väljer kategori
 
     public void CategorySelectionY() throws IOException {
@@ -559,11 +527,6 @@ public class QuizServerPlayer extends Thread {
         selectedCategory = categoryListRandom.get(categorySelected);
 
     }
-
-
-
-
-
 
     //nu får X spela med kategori som valdes av Y
 
@@ -634,37 +597,6 @@ public class QuizServerPlayer extends Thread {
         return totalCorrectAnswersX;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
         this.socket = socket;
         this.tag = tag;
@@ -721,22 +653,11 @@ public class QuizServerPlayer extends Thread {
            // } catch (IOException e) {
              //   throw new RuntimeException(e);
             //}
-
-
         }
 
         if (tag == 'Y') {
             output.println("MESSAGE Väntar på din tur...");
 
-
-
             }
         }
-
-
-
-
-
     }
-
-
