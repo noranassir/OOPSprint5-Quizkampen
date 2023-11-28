@@ -49,7 +49,7 @@ public class QuizServerPlayer extends Thread {
 
     public void ImportQuestions() throws IOException {
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/Users/pontuslundin/Desktop/javamapp/Objektorienterad Programmering/OOPSprint5-Quizkampen/src/Quiz.txt"))) {
 
             while (true) {
                 String input = bufferedReader.readLine();
@@ -301,7 +301,7 @@ public class QuizServerPlayer extends Thread {
         //      quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
         //     quizCategoryList.get(categoryListRandom.get(2)).getCategoryName();
 
-        output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
+        output.println("MESSAGE Välj en kategori!");                                                                       //väljer bland knappar
         output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +
                 quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
                 quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
