@@ -42,7 +42,7 @@ public class Game {
 
     public void ImportQuestions() throws IOException {
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("C:\\Users\\Elias\\Desktop\\OOP\\OOPSprint5-Quizkampen\\src\\Quiz.txt"))) {
 
             while (true) {
                 String input = bufferedReader.readLine();

@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class ServerListener {
 
-    public ServerListener() {
+    public  ServerListener() {
 
         try (ServerSocket serverS = new ServerSocket(5554);) {
 
@@ -17,6 +17,7 @@ public class ServerListener {
 
                 playerX.setOpponent(playerY);
                 playerY.setOpponent(playerX);
+
                 //game.currentPlayer = playerX;      //currentPlayer metod, är första spelaren
                 playerX.start();
                 playerY.start();
