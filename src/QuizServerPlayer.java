@@ -203,6 +203,7 @@ public class QuizServerPlayer extends Thread {
 
     public void QuizGame() throws IOException {
 
+
         int totalCorrectAnswersX = 0;
         int totalCorrectAnswersY = 0;
 
@@ -703,6 +704,8 @@ public class QuizServerPlayer extends Thread {
             SortQuestions();
             AmountOfCategories();
 
+
+
             // try {
             // CategorySelection();
             //} catch (IOException e) {
@@ -729,6 +732,11 @@ public class QuizServerPlayer extends Thread {
 
             }
         }
+
+
+
+
+
     }
 
 
