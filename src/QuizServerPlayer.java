@@ -25,7 +25,7 @@ public class QuizServerPlayer extends Thread {
     private ArrayList<Category> quizCategoryList = new ArrayList<>();
     private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
     private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
-    private int amountOfRounds = 6;
+    private int amountOfRounds = 2;
     private int amountOfQuestions = 3;
 
 
@@ -205,9 +205,10 @@ public class QuizServerPlayer extends Thread {
 
     public void QuizGame() throws IOException {
 
-
-        int totalCorrectAnswers = 0;
         for (int i = 0; i < amountOfRounds; i++) {
+
+            int totalCorrectAnswers = 0;
+
 
             CategorySelection();                             //X spelaren väljer kategori
 
@@ -269,15 +270,18 @@ public class QuizServerPlayer extends Thread {
             totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
             quizAnswersAfterRand.clear();
             categoryListRandom.remove(categorySelected);
-            break;                                              //bryter sig ur första
+            //bryter sig ur första
 
+
+            // JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
+
+            //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
+
+            opponent.output.println("REMOVE_BUTTONS");
+            opponentturn();
+            QuizGameY();
+            opponentturnX();
         }
-        // JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
-
-        //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
-
-        opponent.output.println("REMOVE_BUTTONS");
-        opponentturn();
     }
 
 
@@ -398,7 +402,6 @@ public class QuizServerPlayer extends Thread {
         quizAnswersAfterRand.clear();
         categoryListRandom.remove(categorySelected);
 
-        QuizGameY();
     }
 
 
@@ -495,7 +498,7 @@ public class QuizServerPlayer extends Thread {
         //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
 
         output.println("REMOVE_BUTTONS");
-        opponentturnX();      //INTRESSANT LOGIK
+              //INTRESSANT LOGIK
     }
 
 
@@ -617,7 +620,7 @@ public class QuizServerPlayer extends Thread {
         totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
         quizAnswersAfterRand.clear();
         categoryListRandom.remove(categorySelected);
-        QuizGame();                                            //här startas kedjan om igen, måste spara poäng och göra loop av detta som ändras av properties
+        // QuizGame();                                            //här startas kedjan om igen, måste spara poäng och göra loop av detta som ändras av properties
 
     }
 
