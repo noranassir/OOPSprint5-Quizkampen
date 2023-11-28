@@ -283,9 +283,9 @@ public class QuizServerPlayer extends Thread {
         }
 
         output.println("REMOVE_BUTTONS");
-        output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersX);
+        output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersX + "motståndaren fick: " + totalCorrectAnswersY);
         opponent.output.println("REMOVE_BUTTONS");
-        opponent.output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersY);
+        opponent.output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersY + "motståndaren fick: " + totalCorrectAnswersX);
     }
 
 
