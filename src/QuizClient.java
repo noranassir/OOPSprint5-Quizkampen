@@ -172,7 +172,8 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         for (int i = 0; i < categoryButtons.length; i++) {
             if (i < categoryArray.length) {
                 categoryButtons[i].setVisible(true);
-                categoryButtons[i].setText("<html><center><div style='white-space: nowrap;'>" + categoryArray[i] + "</div></center></html>");
+                categoryButtons[i].setText(categoryArray[i]);
+                //categoryButtons[i].setText("<html><center><div style='white-space: nowrap;'>" + categoryArray[i] + "</div></center></html>");
                 categoryButtons[i].setPreferredSize(new Dimension(200, 100));
             } else {
                 categoryButtons[i].setVisible(false);
@@ -185,7 +186,8 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         for (int i = 0; i < answerButtons.length; i++) {
             if (i < answerArray.length) {
                 answerButtons[i].setVisible(true);
-                answerButtons[i].setText("<html><center><div style='white-space: nowrap;'>" + answerArray[i] + "</div></center></html>");
+                answerButtons[i].setText(answerArray[i]);
+                //answerButtons[i].setText("<html><center><div style='white-space: nowrap;'>" + answerArray[i] + "</div></center></html>");
                 answerButtons[i].setPreferredSize(new Dimension(300, 100));
 
             } else {
