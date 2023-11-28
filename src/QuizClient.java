@@ -204,7 +204,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             button.setVisible(false);
         }
     }
-    
+
 
     public static void main(String[] args) throws Exception {
 

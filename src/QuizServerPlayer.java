@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 import java.util.Random;
 
 /* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
@@ -23,8 +24,8 @@ public class QuizServerPlayer extends Thread {
     private ArrayList<Category> quizCategoryList = new ArrayList<>();
     private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
     private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
-    private int amountOfRounds = 2;
-    private int amountOfQuestions = 3;
+    private int amountOfRounds;
+    private int amountOfQuestions;
 
 
     //Temporära listor för att modifieras
@@ -185,6 +186,15 @@ public class QuizServerPlayer extends Thread {
 
     public void QuizGame() throws IOException {
 
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("/Users/pontuslundin/Desktop/javamapp/Objektorienterad Programmering/OOPSprint5-Quizkampen/src/Settings.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions", "3"));
+        amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds", "3"));
 
         int totalCorrectAnswersX = 0;
         int totalCorrectAnswersY = 0;
