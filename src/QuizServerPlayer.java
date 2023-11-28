@@ -201,7 +201,7 @@ public class QuizServerPlayer extends Thread {
 
 
 
-
+ //här börjar X spelaren, Y spelaren är fast på väntar på din tur (när tråden körs)
 
     public void QuizGame() throws IOException {
 
@@ -209,7 +209,7 @@ public class QuizServerPlayer extends Thread {
         int totalCorrectAnswers = 0;
         for (int i = 0; i < amountOfRounds; i++) {
 
-            CategorySelection();
+            CategorySelection();                             //X spelaren väljer kategori
 
             int correctAnswersPerRound = 0;
             ImportSelectedQuestions();
@@ -257,7 +257,7 @@ public class QuizServerPlayer extends Thread {
             }
 
 
-            while (true) {
+            while (true) {                                                  //efter rundan är klar, skrivs svaret ut
                 output.println("REMOVE_BUTTONS");
                 output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
                 output.println("CATEGORY Bra jobbat!");
@@ -277,13 +277,13 @@ public class QuizServerPlayer extends Thread {
         //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
 
         opponent.output.println("REMOVE_BUTTONS");
-        opponentturn();      //INTRESSANT LOGIK
+        opponentturn();
     }
 
 
 
 
-    public void CategorySelection() throws IOException {       //ÄNDRAT SÅ DEN ÄR CLIENT VÄNLIG
+    public void CategorySelection() throws IOException {       //X spelaren som sagt väljer kategori
 
 
         Collections.shuffle(categoryListRandom, new Random());
@@ -332,7 +332,7 @@ public class QuizServerPlayer extends Thread {
 
 
 
-
+  //här för Y spelaren köra med samma frågor som X hade
     public void opponentturn() throws IOException {
 
 
@@ -418,7 +418,7 @@ public class QuizServerPlayer extends Thread {
 
 
 
-
+//denna är identisk till QuizGame, förutom att det är Y som väljer kategori
 
     public void QuizGameY() throws IOException {
 
@@ -427,7 +427,7 @@ public class QuizServerPlayer extends Thread {
         int totalCorrectAnswers = 0;                      //måste sparas någonstans
         for (int i = 0; i < amountOfRounds; i++) {
 
-            CategorySelectionY();
+            CategorySelectionY();                      //y väljer kategori
 
             int correctAnswersPerRound = 0;
             ImportSelectedQuestions();
@@ -502,9 +502,9 @@ public class QuizServerPlayer extends Thread {
 
 
 
+      //som sagt y väljer kategori
 
-
-    public void CategorySelectionY() throws IOException {       //ÄNDRAT SÅ DEN ÄR CLIENT VÄNLIG
+    public void CategorySelectionY() throws IOException {
 
 
         Collections.shuffle(categoryListRandom, new Random());
@@ -554,7 +554,7 @@ public class QuizServerPlayer extends Thread {
 
 
 
-
+    //nu får X spela med kategori som valdes av Y
 
     public void opponentturnX() throws IOException {
 
@@ -617,7 +617,7 @@ public class QuizServerPlayer extends Thread {
         totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
         quizAnswersAfterRand.clear();
         categoryListRandom.remove(categorySelected);
-        QuizGame();
+        QuizGame();                                            //här startas kedjan om igen, måste spara poäng och göra loop av detta som ändras av properties
 
     }
 
