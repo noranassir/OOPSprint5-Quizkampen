@@ -289,7 +289,7 @@ public class QuizServerPlayer extends Thread {
         opponent.output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersY + "motståndaren fick: " + totalCorrectAnswersX);
     }
 
-
+   //test merge
 
 
     public void CategorySelection() throws IOException {       //X spelaren som sagt väljer kategori
