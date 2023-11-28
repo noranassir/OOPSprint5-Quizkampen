@@ -210,7 +210,7 @@ public class QuizServerPlayer extends Thread {
         for (int i = 0; i < amountOfRounds; i++) {
 
 
-            CategorySelection();                             //X spelaren väljer kategori
+            CategorySelection();                             //X spelaren väljer kategori push
 
             int correctAnswersPerRoundX = 0;
             ImportSelectedQuestions();
