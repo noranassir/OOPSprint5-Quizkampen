@@ -143,53 +143,6 @@ public class QuizServerPlayer extends Thread {
     }
 
 
-    public void CategorySelection() throws IOException {       //ÄNDRAT SÅ DEN ÄR CLIENT VÄNLIG
-
-
-        Collections.shuffle(categoryListRandom, new Random());
-        int categorySelector = 0;
-        //     quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() +
-        //      quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
-        //     quizCategoryList.get(categoryListRandom.get(2)).getCategoryName();
-
-        output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
-        output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +
-                quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
-                quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
-
-        while (true) {
-            String inputtext = input.readLine().trim();
-            if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(0)).getCategoryName())) {
-
-                categorySelector = 1;
-                output.println("REMOVE_BUTTONS");
-                break;
-            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(1)).getCategoryName())) {
-                categorySelector = 2;
-                output.println("REMOVE_BUTTONS");
-                break;
-
-            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(2)).getCategoryName())) {
-                categorySelector = 3;
-                output.println("REMOVE_BUTTONS");
-                break;
-            }
-        }
-
-        //try{
-        //   categorySelected = Integer.parseInt(categorySelector);
-        // }
-        //catch (NumberFormatException e){
-        //   e.printStackTrace();
-
-        categorySelected = categorySelector;
-        categorySelected = categorySelected - 1;
-        selectedCategory = categoryListRandom.get(categorySelected);
-
-    }
-
-
-
 
     public void ImportSelectedQuestions() {
         quizQuestionRandomiser.clear();
@@ -229,6 +182,23 @@ public class QuizServerPlayer extends Thread {
             quizAnswersAfterRand.remove(0);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -313,6 +283,50 @@ public class QuizServerPlayer extends Thread {
 
 
 
+    public void CategorySelection() throws IOException {       //ÄNDRAT SÅ DEN ÄR CLIENT VÄNLIG
+
+
+        Collections.shuffle(categoryListRandom, new Random());
+        int categorySelector = 0;
+        //     quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() +
+        //      quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
+        //     quizCategoryList.get(categoryListRandom.get(2)).getCategoryName();
+
+        output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
+        output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +
+                quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
+                quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
+
+        while (true) {
+            String inputtext = input.readLine().trim();
+            if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(0)).getCategoryName())) {
+
+                categorySelector = 1;
+                output.println("REMOVE_BUTTONS");
+                break;
+            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(1)).getCategoryName())) {
+                categorySelector = 2;
+                output.println("REMOVE_BUTTONS");
+                break;
+
+            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(2)).getCategoryName())) {
+                categorySelector = 3;
+                output.println("REMOVE_BUTTONS");
+                break;
+            }
+        }
+
+        //try{
+        //   categorySelected = Integer.parseInt(categorySelector);
+        // }
+        //catch (NumberFormatException e){
+        //   e.printStackTrace();
+
+        categorySelected = categorySelector;
+        categorySelected = categorySelected - 1;
+        selectedCategory = categoryListRandom.get(categorySelected);
+
+    }
 
 
 
@@ -376,7 +390,6 @@ public class QuizServerPlayer extends Thread {
             opponent.output.println("CATEGORY Bra jobbat!");
             opponent.input.readLine();
             opponent.output.println("REMOVE_BUTTONS");
-            QuizGameY();
             break;
         }
 
@@ -385,7 +398,24 @@ public class QuizServerPlayer extends Thread {
         quizAnswersAfterRand.clear();
         categoryListRandom.remove(categorySelected);
 
+        QuizGameY();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -472,6 +502,8 @@ public class QuizServerPlayer extends Thread {
 
 
 
+
+
     public void CategorySelectionY() throws IOException {       //ÄNDRAT SÅ DEN ÄR CLIENT VÄNLIG
 
 
@@ -516,6 +548,7 @@ public class QuizServerPlayer extends Thread {
         selectedCategory = categoryListRandom.get(categorySelected);
 
     }
+
 
 
 
@@ -577,7 +610,6 @@ public class QuizServerPlayer extends Thread {
             output.println("CATEGORY Bra jobbat!");
             input.readLine();
             output.println("REMOVE_BUTTONS");
-            QuizGame();
             break;
         }
 
@@ -585,24 +617,9 @@ public class QuizServerPlayer extends Thread {
         totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
         quizAnswersAfterRand.clear();
         categoryListRandom.remove(categorySelected);
+        QuizGame();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
