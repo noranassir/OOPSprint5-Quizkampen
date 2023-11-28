@@ -211,7 +211,7 @@ public class QuizServerPlayer extends Thread {
 
             CategorySelection();                             //X spelaren väljer kategori
 
-            int correctAnswersPerRound = 0;
+            int correctAnswersPerRoundX = 0;
             ImportSelectedQuestions();
 
             for (int j = 0; j < amountOfQuestions; j++) {
@@ -250,7 +250,7 @@ public class QuizServerPlayer extends Thread {
                 for (Answer a : quizAnswersList) {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
-                            correctAnswersPerRound++;
+                            correctAnswersPerRoundX++;
                         }
                     }
                 }
@@ -259,14 +259,14 @@ public class QuizServerPlayer extends Thread {
 
             while (true) {                                                  //efter rundan är klar, skrivs svaret ut
                 output.println("REMOVE_BUTTONS");
-                output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
+                output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRoundX);
                 output.println("CATEGORY Bra jobbat!");
                 input.readLine();
                 break;
             }
 
             //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
-            totalCorrectAnswersX = totalCorrectAnswersX + correctAnswersPerRound;
+            totalCorrectAnswersX = totalCorrectAnswersX + correctAnswersPerRoundX;
             quizAnswersAfterRand.clear();
             categoryListRandom.remove(categorySelected);
             //bryter sig ur första
@@ -277,7 +277,7 @@ public class QuizServerPlayer extends Thread {
             //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
 
             opponent.output.println("REMOVE_BUTTONS");
-            totalCorrectAnswersY = opponentturn(totalCorrectAnswersY);
+            totalCorrectAnswersY = opponentturn(totalCorrectAnswersY, correctAnswersPerRoundX);
             totalCorrectAnswersY = QuizGameY(totalCorrectAnswersY);
             totalCorrectAnswersX = opponentturnX(totalCorrectAnswersX);
         }
@@ -341,10 +341,11 @@ public class QuizServerPlayer extends Thread {
 
 
   //här för Y spelaren köra med samma frågor som X hade
-    public int opponentturn(int totalcorrectY) throws IOException {
+    public int opponentturn(int totalcorrectY, int totalanswerroundX) throws IOException {
 
 
         int totalCorrectAnswersY = totalcorrectY;
+        int correctanswerroundX = totalanswerroundX;
         int correctAnswersPerRound = 0;
 
 
@@ -394,7 +395,8 @@ public class QuizServerPlayer extends Thread {
 
         while (true) {
             opponent.output.println("REMOVE_BUTTONS");
-            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
+            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick " + totalanswerroundX);
+            output.println("MESSAGE motståndaren fick: " + correctAnswersPerRound);          //visar för X också
             opponent.output.println("CATEGORY Bra jobbat!");
             opponent.input.readLine();
             opponent.output.println("REMOVE_BUTTONS");
@@ -615,6 +617,7 @@ public class QuizServerPlayer extends Thread {
         while (true) {
             output.println("REMOVE_BUTTONS");
             output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
+            opponent.output.println("MESSAGE motståndaren fick: " + correctAnswersPerRound);
             output.println("CATEGORY Bra jobbat!");
             input.readLine();
             output.println("REMOVE_BUTTONS");
