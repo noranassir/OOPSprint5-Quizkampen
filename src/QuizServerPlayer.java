@@ -10,6 +10,8 @@ public class QuizServerPlayer extends Thread {
 
 
     char tag;
+
+    int roundScore;
     QuizServerPlayer opponent;
 
     Socket socket;
@@ -252,6 +254,7 @@ public class QuizServerPlayer extends Thread {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundX++;
+                            roundScore = correctAnswersPerRoundX;                 //sätter X score för denna runda till... denna rundas score
                         }
                     }
                 }
@@ -278,7 +281,7 @@ public class QuizServerPlayer extends Thread {
             //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
 
             opponent.output.println("REMOVE_BUTTONS");
-            totalCorrectAnswersY = opponentturn(totalCorrectAnswersY, correctAnswersPerRoundX);
+            totalCorrectAnswersY = opponentturn(totalCorrectAnswersY);
             totalCorrectAnswersY = QuizGameY(totalCorrectAnswersY);
             totalCorrectAnswersX = opponentturnX(totalCorrectAnswersX);
         }
@@ -342,11 +345,10 @@ public class QuizServerPlayer extends Thread {
 
 
   //här för Y spelaren köra med samma frågor som X hade
-    public int opponentturn(int totalcorrectY, int totalanswerroundX) throws IOException {
+    public int opponentturn(int totalcorrectY) throws IOException {
 
 
         int totalCorrectAnswersY = totalcorrectY;
-        int correctanswerroundX = totalanswerroundX;
         int correctAnswersPerRound = 0;
 
 
@@ -396,11 +398,12 @@ public class QuizServerPlayer extends Thread {
 
         while (true) {
             opponent.output.println("REMOVE_BUTTONS");
-            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick " + totalanswerroundX);
-            output.println("MESSAGE motståndaren fick: " + correctAnswersPerRound);          //visar för X också
+            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick " + roundScore);
+            output.println("MESSAGE Antalet rätt för denna runda:  " + roundScore + "motståndaren fick: " + correctAnswersPerRound);          //visar för X också
             opponent.output.println("CATEGORY Bra jobbat!");
             opponent.input.readLine();
             opponent.output.println("REMOVE_BUTTONS");
+            roundScore = 0;
             break;
         }
 
@@ -480,6 +483,7 @@ public class QuizServerPlayer extends Thread {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRound++;
+                            opponent.roundScore = correctAnswersPerRound;         //sätter roundscore för Y spelare
                         }
                     }
                 }
@@ -617,11 +621,12 @@ public class QuizServerPlayer extends Thread {
         }
         while (true) {
             output.println("REMOVE_BUTTONS");
-            output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
-            opponent.output.println("MESSAGE motståndaren fick: " + correctAnswersPerRound);
+            output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick" + opponent.roundScore);
+            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + opponent.roundScore + "motståndaren fick: " + correctAnswersPerRound);
             output.println("CATEGORY Bra jobbat!");
             input.readLine();
             output.println("REMOVE_BUTTONS");
+            opponent.roundScore = 0;
             break;
         }
 
@@ -665,10 +670,11 @@ public class QuizServerPlayer extends Thread {
 
 
 
-    public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
+    public QuizServerPlayer(Socket socket, char tag, QuizServer game, int score) {
         this.socket = socket;
         this.tag = tag;
         this.game = game;
+        this.roundScore = score;
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
