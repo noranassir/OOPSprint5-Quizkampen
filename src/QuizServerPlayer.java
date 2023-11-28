@@ -181,24 +181,6 @@ public class QuizServerPlayer extends Thread {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  //här börjar X spelaren, Y spelaren är fast på väntar på din tur (när tråden körs)
 
     public void QuizGame() throws IOException {
@@ -337,10 +319,6 @@ public class QuizServerPlayer extends Thread {
 
     }
 
-
-
-
-
   //här för Y spelaren köra med samma frågor som X hade
     public int opponentturn(int totalcorrectY, int totalanswerroundX) throws IOException {
 
@@ -411,22 +389,6 @@ public class QuizServerPlayer extends Thread {
         return totalCorrectAnswersY;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //denna är identisk till QuizGame, förutom att det är Y som väljer kategori
@@ -509,10 +471,6 @@ public class QuizServerPlayer extends Thread {
               return totalCorrectAnswersY;
     }
 
-
-
-
-
       //som sagt y väljer kategori
 
     public void CategorySelectionY() throws IOException {
@@ -559,11 +517,6 @@ public class QuizServerPlayer extends Thread {
         selectedCategory = categoryListRandom.get(categorySelected);
 
     }
-
-
-
-
-
 
     //nu får X spela med kategori som valdes av Y
 
@@ -634,37 +587,6 @@ public class QuizServerPlayer extends Thread {
         return totalCorrectAnswersX;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
         this.socket = socket;
         this.tag = tag;
@@ -721,22 +643,11 @@ public class QuizServerPlayer extends Thread {
            // } catch (IOException e) {
              //   throw new RuntimeException(e);
             //}
-
-
         }
 
         if (tag == 'Y') {
             output.println("MESSAGE Väntar på din tur...");
 
-
-
             }
         }
-
-
-
-
-
     }
-
-

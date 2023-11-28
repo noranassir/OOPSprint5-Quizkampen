@@ -204,12 +204,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             button.setVisible(false);
         }
     }
-
-
-
-
-
-
+    
 
     public static void main(String[] args) throws Exception {
 
@@ -232,14 +227,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         out.println(clickedButton.getText());             //skickar ut texten på knappen
     }
 }
-
-
-
-
-
-
-
-
 
 /*
 
@@ -276,14 +263,3 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         }
 
  */
-
-
-
-
-
-
-
-
-
-
-
