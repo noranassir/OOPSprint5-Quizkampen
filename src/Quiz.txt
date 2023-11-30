@@ -1269,10 +1269,10 @@
 2:Kvast
 
 %%Vad är huvudingredienserna i kroppkakor?
-1:Potatis, fläsk och lök
-2:Torsk, lax och kolja
-2:Havregryn, salt och vatten
-2:Mjöl, kakao och socker
+1:Potatis fläsk och lök
+2:Torsk lax och kolja
+2:Havregryn salt och vatten
+2:Mjöl kakao och socker
 
 %%Vilket bakverk kallas för "hetvägg" när det äts tillsammans med varm mjölk?
 1:Semla
@@ -2012,7 +2012,7 @@
 1:M*A*S*H
 2:Onedinlinjen
 2:Falcon Crest
-2:'Allå, 'allå, 'emliga armén
+2:'Allå 'allå 'emliga armén
 
 %%Vad heter Nicks vän och medhjälpare som kan förvandla sig till en varg i TV-serien "Grimm"?
 1:Eddie Monroe

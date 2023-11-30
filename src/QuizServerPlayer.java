@@ -1,8 +1,6 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 /* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
  */
@@ -11,8 +9,10 @@ public class QuizServerPlayer extends Thread {
 
     char tag;
 
-    int roundScore;
+    //int roundScore;
     QuizServerPlayer opponent;
+
+
 
     Socket socket;
     BufferedReader input;
@@ -25,8 +25,8 @@ public class QuizServerPlayer extends Thread {
     private ArrayList<Category> quizCategoryList = new ArrayList<>();
     private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
     private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
-    private int amountOfRounds = 2;
-    private int amountOfQuestions = 3;
+    private int amountOfRounds = 0;
+    private int amountOfQuestions = 0;
 
 
     //Temporära listor för att modifieras
@@ -35,6 +35,12 @@ public class QuizServerPlayer extends Thread {
     private ArrayList<Question> quizQuestionRandomiser = new ArrayList<>();
     private ArrayList<Answer> quizAnswersAfterRand = new ArrayList<>();
     private ArrayList<Answer> randomisedAnswers = new ArrayList<>();
+
+    private List<String> scoreRoundX = new ArrayList<>();
+
+    private List<String> scoreRoundY = new ArrayList<>();
+
+    private int currentround = 0;
 
 
     //Diverse variabler för multipla metoder
@@ -51,13 +57,14 @@ public class QuizServerPlayer extends Thread {
 
     public void ImportQuestions() throws IOException {
 
+
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))) {
 
             while (true) {
                 String input = bufferedReader.readLine();
 
                 if (input != null) {
-                    importList.add(input);
+                    importList.add(input);       //importlista är där vi får in allt i filen
                 } else {
                     break;
                 }
@@ -203,7 +210,18 @@ public class QuizServerPlayer extends Thread {
 
  //här börjar X spelaren, Y spelaren är fast på väntar på din tur (när tråden körs)
 
-    public void QuizGame() throws IOException {
+    public void QuizGame() throws IOException, InterruptedException {
+
+
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream(".\\src\\Settings.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions", "3"));
+        amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds", "3"));
 
 
         int totalCorrectAnswersX = 0;
@@ -244,6 +262,7 @@ public class QuizServerPlayer extends Thread {
                     } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
                         userAnswerInt = 4;
                         break;
+
                     }
                 }
 
@@ -254,11 +273,18 @@ public class QuizServerPlayer extends Thread {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundX++;
-                            roundScore = correctAnswersPerRoundX;                 //sätter X score för denna runda till... denna rundas score
+
                         }
                     }
                 }
+                sleepy();
             }
+
+            //roundScore = correctAnswersPerRoundX;                 //sätter X score för denna runda till... denna rundas score
+            String temp = "" + correctAnswersPerRoundX;
+            scoreRoundX.add(temp);
+            currentround++;
+
 
 
             while (true) {                                                  //efter rundan är klar, skrivs svaret ut
@@ -267,6 +293,9 @@ public class QuizServerPlayer extends Thread {
                 output.println("CATEGORY Bra jobbat!");
                 input.readLine();
                 break;
+
+               // output.println("MESSAGE Poäng för runda" + index + " är lika med " + scoreRoundX);
+
             }
 
             //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
@@ -289,6 +318,7 @@ public class QuizServerPlayer extends Thread {
         output.println("REMOVE_BUTTONS");
         output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersX + "motståndaren fick: " + totalCorrectAnswersY);
         opponent.output.println("REMOVE_BUTTONS");
+        opponent.output.println("SHIDE");
         opponent.output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersY + "motståndaren fick: " + totalCorrectAnswersX);
     }
 
@@ -345,11 +375,11 @@ public class QuizServerPlayer extends Thread {
 
 
   //här för Y spelaren köra med samma frågor som X hade
-    public int opponentturn(int totalcorrectY) throws IOException {
+    public int opponentturn(int totalcorrectY) throws IOException, InterruptedException {
 
-
+        opponent.output.println("SHIDE");
         int totalCorrectAnswersY = totalcorrectY;
-        int correctAnswersPerRound = 0;
+        int correctAnswersPerRoundY = 0;
 
 
         for (int j = 0; j < amountOfQuestions; j++) {
@@ -388,27 +418,38 @@ public class QuizServerPlayer extends Thread {
             for (Answer a : quizAnswersList) {
                 if (tempAnswer == a) {
                     if (a.getCorrectAnswer() == true) {
-                        correctAnswersPerRound++;
+                        correctAnswersPerRoundY++;
                     }
                 }
             }
         }
-
+        //opponent.roundScore = correctAnswersPerRoundY;                 //sätter Y score för denna runda till... denna rundas score
+        String temp = "" + correctAnswersPerRoundY;
+        scoreRoundY.add(temp);
 
 
         while (true) {
             opponent.output.println("REMOVE_BUTTONS");
-            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick " + roundScore);
-            output.println("MESSAGE Antalet rätt för denna runda:  " + roundScore + "motståndaren fick: " + correctAnswersPerRound);          //visar för X också
+            opponent.output.println("SSHOW");
+            output.println("SSHOW");
+
+                opponent.output.println("SCORE  runda " + currentround + "poäng är" + scoreRoundY.get(scoreRoundY.size() - 1) +
+                        " motståndaren har " + scoreRoundX.get(scoreRoundX.size() - 1));
+                output.println("SCORE runda " + currentround + "poäng är" + scoreRoundX.get(scoreRoundX.size() - 1) +
+                        " motståndaren har " + scoreRoundY.get(scoreRoundY.size() - 1));
+
+
             opponent.output.println("CATEGORY Bra jobbat!");
             opponent.input.readLine();
+            //output.println("SHIDE");
+            opponent.output.println("SHIDE");
             opponent.output.println("REMOVE_BUTTONS");
-            roundScore = 0;
+           // opponent.roundScore = 0;
             break;
         }
 
         //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
-        totalCorrectAnswersY = totalCorrectAnswersY + correctAnswersPerRound;
+        totalCorrectAnswersY = totalCorrectAnswersY + correctAnswersPerRoundY;
         quizAnswersAfterRand.clear();
         categoryListRandom.remove(categorySelected);
         return totalCorrectAnswersY;
@@ -443,7 +484,7 @@ public class QuizServerPlayer extends Thread {
 
             CategorySelectionY();                      //y väljer kategori
 
-            int correctAnswersPerRound = 0;
+            int correctAnswersPerRoundY = 0;
             ImportSelectedQuestions();
 
             for (int j = 0; j < amountOfQuestions; j++) {
@@ -482,24 +523,29 @@ public class QuizServerPlayer extends Thread {
                 for (Answer a : quizAnswersList) {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
-                            correctAnswersPerRound++;
-                            opponent.roundScore = correctAnswersPerRound;         //sätter roundscore för Y spelare
+                            correctAnswersPerRoundY++;
+                           // opponent.roundScore = correctAnswersPerRoundY;         //sätter roundscore för Y spelare
                         }
                     }
                 }
             }
 
+            //opponent.roundScore = correctAnswersPerRoundY;                 //sätter Y score för denna runda till... denna rundas score
+            String temp = "" + correctAnswersPerRoundY;
+            scoreRoundY.add(temp);
+            currentround++;
+
 
             while (true) {
                 opponent.output.println("REMOVE_BUTTONS");
-                opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound);
+                opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRoundY);
                 opponent.output.println("CATEGORY Bra jobbat!");
                 opponent.input.readLine();
                 break;
             }
 
             //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
-            totalCorrectAnswersY = totalCorrectAnswersY + correctAnswersPerRound;
+            totalCorrectAnswersY = totalCorrectAnswersY + correctAnswersPerRoundY;
             quizAnswersAfterRand.clear();
             categoryListRandom.remove(categorySelected);
             break;                                              //bryter sig ur första
@@ -574,6 +620,7 @@ public class QuizServerPlayer extends Thread {
     public int opponentturnX(int correctanswerX) throws IOException {
 
 
+        output.println("SHIDE");
         int totalCorrectAnswersX = correctanswerX;
         int correctAnswersPerRound = 0;
 
@@ -619,15 +666,41 @@ public class QuizServerPlayer extends Thread {
                 }
             }
         }
+        String temp = "" + correctAnswersPerRound;
+        scoreRoundX.add(temp);
+
+
+
         while (true) {
             output.println("REMOVE_BUTTONS");
+            output.println("SSHOW");
+
+            opponent.output.println("SSHOW");
+
+            output.println("SCORE runda " + currentround + "poäng är" + scoreRoundX.get(scoreRoundX.size() - 1) +
+                    " motståndaren har " + scoreRoundY.get(scoreRoundY.size() - 1));
+            opponent.output.println("SCORE  runda " + currentround + "poäng är" + scoreRoundY.get(scoreRoundY.size() - 1) +
+                    " motståndaren har " + scoreRoundX.get(scoreRoundX.size() - 1));
+
+
+            //output.println("CATEGORY Bra jobbat!");
+            //opponent.input.readLine();
+            //output.println("SHIDE");
+            //opponent.output.println("SHIDE");
+            output.println("CATEGORY Bra jobbat!");
+            input.readLine();
+            output.println("REMOVE_BUTTONS");
+            output.println("SHIDE");
+           // this.roundScore = 0;
+            break;
+            /*
             output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick" + opponent.roundScore);
             opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + opponent.roundScore + "motståndaren fick: " + correctAnswersPerRound);
             output.println("CATEGORY Bra jobbat!");
             input.readLine();
             output.println("REMOVE_BUTTONS");
             opponent.roundScore = 0;
-            break;
+            break;  */
         }
 
         //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
@@ -648,6 +721,11 @@ public class QuizServerPlayer extends Thread {
 
 
 
+    public void sleepy() throws InterruptedException {
+        Thread.sleep(500);
+
+
+    }
 
 
 
@@ -662,19 +740,10 @@ public class QuizServerPlayer extends Thread {
 
 
 
-
-
-
-
-
-
-
-
-    public QuizServerPlayer(Socket socket, char tag, QuizServer game, int score) {
+    public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
         this.socket = socket;
         this.tag = tag;
         this.game = game;
-        this.roundScore = score;
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -721,8 +790,10 @@ public class QuizServerPlayer extends Thread {
                 QuizGame();
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-           // try {
+            // try {
              //   opponent.QuizGame();                //får moståndaren att spela
            // } catch (IOException e) {
              //   throw new RuntimeException(e);
