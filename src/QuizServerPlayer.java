@@ -59,6 +59,8 @@ public class QuizServerPlayer extends Thread {
                 game.importAnswers();
                 game.randomiseAnswers();
 
+                output.println("MESSAGE " + game.quizQuestionRandomiser.get(j).getQuizQuestion());
+
                 int userAnswerInt = getUserAnswer();
                 Object tempAnswer = game.randomisedAnswers.get(userAnswerInt);
 
@@ -100,7 +102,7 @@ public class QuizServerPlayer extends Thread {
         int userAnswerInt = 0;
         String inputtext = "";
 
-        output.println("MESSAGE " + game.quizQuestionRandomiser.get(currentround).getQuizQuestion());
+
         output.println("ANSWERS " + game.randomisedAnswers.get(0).getQuizAnswer() + ", " +
                 game.randomisedAnswers.get(1).getQuizAnswer() + ", " +
                 game.randomisedAnswers.get(2).getQuizAnswer() + ", " +
