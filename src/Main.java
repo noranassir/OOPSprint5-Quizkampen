@@ -8,11 +8,11 @@ public class Main {
         game.SortQuestions();
         game.QuestionOptions();*/
 
-        Game game = new Game();
-        game.ImportQuestions();
-        game.SortQuestions();
-        game.AmountOfCategories();
-        game.QuizGame();
+       // Game game = new Game();
+        //game.ImportQuestions();
+        //game.SortQuestions();
+        //game.AmountOfCategories();
+       // game.QuizGame();
 
     }
 }
