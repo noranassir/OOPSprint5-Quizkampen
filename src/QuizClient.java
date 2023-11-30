@@ -15,6 +15,8 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
     private JFrame frame = new JFrame("Quizkampen");
     private JPanel messagePanel = new JPanel(new FlowLayout());
     private JTextPane messageArea = new JTextPane();
+
+    private JTextArea textarea = new JTextArea();
     private JButton[] categoryButtons = new JButton[3];
     private JButton[] answerButtons = new JButton[4];
 
@@ -105,6 +107,11 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         //messageArea.setLineWrap(true);
         //messageArea.setWrapStyleWord(true);
 
+        textarea.setText("");
+        textarea.setEditable(false);
+        textarea.setPreferredSize(new Dimension(300,400));
+        textarea.setVisible(false);
+
         messageArea.setFocusable(false);
         messagePanel.add(messageArea);
         boardQuestions.add(messagePanel, BorderLayout.CENTER);
@@ -112,6 +119,8 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         frame.getContentPane().add(boardQuestions, "North");
         frame.getContentPane().add(boardButtons, "Center");
         frame.getContentPane().add(boardScore, "South");
+
+        messagePanel.add(textarea);
 
 
 
@@ -182,6 +191,20 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                 } else if (response.startsWith("REMOVE_BUTTONS")) {
                     hideAllButtons();
                 }
+
+                else if (response.startsWith("SCORE")) {
+                    //textarea.setText("HEJ HEJ");
+                    textarea.append(response.substring(6));
+                    textarea.append("\n");
+                } else if (response.startsWith("SSHOW")) {
+                     messageArea.setVisible(false);
+                    textarea.setVisible(true);
+                } else if (response.startsWith("SHIDE")) {
+                    messageArea.setVisible(true);
+                    //textarea.setText(null);
+                    textarea.setVisible(false);
+                }
+
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

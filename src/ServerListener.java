@@ -14,8 +14,8 @@ public class ServerListener {
 
                 QuizServer game = new QuizServer();
 
-                QuizServerPlayer playerX = new QuizServerPlayer(serverS.accept(), 'X', game, 0);
-                QuizServerPlayer playerY = new QuizServerPlayer(serverS.accept(), 'Y', game, 0);
+                QuizServerPlayer playerX = new QuizServerPlayer(serverS.accept(), 'X', game);
+                QuizServerPlayer playerY = new QuizServerPlayer(serverS.accept(), 'Y', game);
 
                 playerX.setOpponent(playerY);
                 playerY.setOpponent(playerX);
