@@ -2,8 +2,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
-/* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
- */
+
 public class QuizServerPlayer extends Thread {
 
 
@@ -26,7 +25,7 @@ public class QuizServerPlayer extends Thread {
     private int amountOfQuestions = 0;
 
 
-    //Temporära listor för att modifieras
+
 
     private ArrayList<Integer> categoryListRandom = new ArrayList<>();
     private ArrayList<Question> quizQuestionRandomiser = new ArrayList<>();
@@ -40,7 +39,6 @@ public class QuizServerPlayer extends Thread {
     private int currentround = 0;
 
 
-    //Diverse variabler för multipla metoder
     int amountOfCategories = 0;
     int categorySelected = 0;
     public int selectedCategory = 0;
@@ -282,10 +280,10 @@ public class QuizServerPlayer extends Thread {
         }
 
         output.println("REMOVE_BUTTONS");
-        output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersX + "motståndaren fick: " + totalCorrectAnswersY);
+        output.println("MESSAGE Dina poäng: " +  totalCorrectAnswersX + "        Motståndarens poäng: " + totalCorrectAnswersY);
         opponent.output.println("REMOVE_BUTTONS");
         opponent.output.println("SHIDE");
-        opponent.output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersY + "motståndaren fick: " + totalCorrectAnswersX);
+        opponent.output.println("MESSAGE Dina poäng: " +  totalCorrectAnswersY + "        Motståndarens poäng: " + totalCorrectAnswersX);
     }
 
 
