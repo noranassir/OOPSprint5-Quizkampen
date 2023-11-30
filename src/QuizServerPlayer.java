@@ -11,7 +11,7 @@ public class QuizServerPlayer extends Thread {
     Game game;
     private int currentround = 0;
     int categorySelected = 0;
-    public int selectedCategory = 0;
+    //public int selectedCategory = 0;
     private int amountOfRounds = 0;
     private int amountOfQuestions = 0;
 
@@ -160,7 +160,7 @@ public class QuizServerPlayer extends Thread {
         }
 
         categorySelected = categorySelector - 1;
-        selectedCategory = game.categoryListRandom.get(categorySelected);
+        game.selectedCategory = game.categoryListRandom.get(categorySelected);
     }
 
 
