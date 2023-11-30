@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
@@ -13,6 +14,8 @@ public class QuizServerPlayer extends Thread {
 
     int roundScore;
     QuizServerPlayer opponent;
+
+
 
     Socket socket;
     BufferedReader input;
@@ -36,6 +39,10 @@ public class QuizServerPlayer extends Thread {
     private ArrayList<Answer> quizAnswersAfterRand = new ArrayList<>();
     private ArrayList<Answer> randomisedAnswers = new ArrayList<>();
 
+    private List<String> scoreRoundX = new ArrayList<>();
+
+    private List<String> scoreRoundY = new ArrayList<>();
+
 
     //Diverse variabler för multipla metoder
     int amountOfCategories = 0;
@@ -50,6 +57,7 @@ public class QuizServerPlayer extends Thread {
 
 
     public void ImportQuestions() throws IOException {
+
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))) {
 
@@ -254,16 +262,35 @@ public class QuizServerPlayer extends Thread {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundX++;
-                            roundScore = correctAnswersPerRoundX;                 //sätter X score för denna runda till... denna rundas score
+
+
                         }
                     }
                 }
             }
 
+            this.roundScore = correctAnswersPerRoundX;                 //sätter X score för denna runda till... denna rundas score
+            String temp = "" + correctAnswersPerRoundX;
+            scoreRoundX.add(temp);
+            int index = scoreRoundX.indexOf(temp);
+
+
 
             while (true) {                                                  //efter rundan är klar, skrivs svaret ut
                 output.println("REMOVE_BUTTONS");
-                output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRoundX);
+
+
+                for (int y = 0; y < scoreRoundX.size(); y++) {
+                    String element = scoreRoundX.get(y);
+                    output.println("MESSAGE Poäng för runda" + index + "är lika med " + element);
+                  //problemet är den replacear tidigare message over and over
+                }
+
+               // output.println("MESSAGE Poäng för runda" + index + " är lika med " + scoreRoundX);
+
+
+
+
                 output.println("CATEGORY Bra jobbat!");
                 input.readLine();
                 break;
@@ -398,12 +425,12 @@ public class QuizServerPlayer extends Thread {
 
         while (true) {
             opponent.output.println("REMOVE_BUTTONS");
-            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick " + roundScore);
-            output.println("MESSAGE Antalet rätt för denna runda:  " + roundScore + "motståndaren fick: " + correctAnswersPerRound);          //visar för X också
+            opponent.output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRound + "motståndaren fick " + this.roundScore);
+            output.println("MESSAGE Antalet rätt för denna runda:  " + this.roundScore + "motståndaren fick: " + correctAnswersPerRound);          //visar för X också
             opponent.output.println("CATEGORY Bra jobbat!");
             opponent.input.readLine();
             opponent.output.println("REMOVE_BUTTONS");
-            roundScore = 0;
+            this.roundScore = 0;
             break;
         }
 
@@ -661,20 +688,11 @@ public class QuizServerPlayer extends Thread {
 
 
 
-
-
-
-
-
-
-
-
-
-    public QuizServerPlayer(Socket socket, char tag, QuizServer game, int score) {
+    public QuizServerPlayer(Socket socket, char tag, QuizServer game, int Score) {
         this.socket = socket;
         this.tag = tag;
         this.game = game;
-        this.roundScore = score;
+        this.roundScore = Score;
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);

@@ -4,11 +4,13 @@ import java.net.Socket;
 
 public class ServerListener {
 
+
     public  ServerListener() {
 
         try (ServerSocket serverS = new ServerSocket(5554);) {
 
             while(true){
+
 
                 QuizServer game = new QuizServer();
 
