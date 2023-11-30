@@ -58,7 +58,7 @@ public class QuizServerPlayer extends Thread {
     public void ImportQuestions() throws IOException {
 
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("/Users/pontuslundin/Desktop/javamapp/Objektorienterad Programmering/OOPSprint5-Quizkampen/src/Quiz.txt"))) {
 
             while (true) {
                 String input = bufferedReader.readLine();
@@ -215,7 +215,7 @@ public class QuizServerPlayer extends Thread {
 
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream(".\\src\\Settings.properties"));
+            properties.load(new FileInputStream("/Users/pontuslundin/Desktop/javamapp/Objektorienterad Programmering/OOPSprint5-Quizkampen/src/Settings.properties"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -433,10 +433,12 @@ public class QuizServerPlayer extends Thread {
             opponent.output.println("SSHOW");
             output.println("SSHOW");
 
-                opponent.output.println("SCORE  runda " + currentround + "poäng är" + scoreRoundY.get(scoreRoundY.size() - 1) +
-                        " motståndaren har " + scoreRoundX.get(scoreRoundX.size() - 1));
-                output.println("SCORE runda " + currentround + "poäng är" + scoreRoundX.get(scoreRoundX.size() - 1) +
-                        " motståndaren har " + scoreRoundY.get(scoreRoundY.size() - 1));
+                opponent.output.println("SCORE KATEGORI " + currentround);
+                opponent.output.println("SCORE Dina poäng: " + scoreRoundY.get(scoreRoundY.size() - 1));
+                opponent.output.println("SCORE Motståndares poäng: " + scoreRoundX.get(scoreRoundX.size() - 1));
+                output.println("SCORE KATEGORI " + currentround);
+                output.println("SCORE Dina poäng: " + scoreRoundY.get(scoreRoundY.size() - 1));
+                output.println("SCORE Motståndares poäng: " + scoreRoundX.get(scoreRoundX.size() - 1));
 
 
             opponent.output.println("CATEGORY Bra jobbat!");
@@ -677,10 +679,12 @@ public class QuizServerPlayer extends Thread {
 
             opponent.output.println("SSHOW");
 
-            output.println("SCORE runda " + currentround + "poäng är" + scoreRoundX.get(scoreRoundX.size() - 1) +
-                    " motståndaren har " + scoreRoundY.get(scoreRoundY.size() - 1));
-            opponent.output.println("SCORE  runda " + currentround + "poäng är" + scoreRoundY.get(scoreRoundY.size() - 1) +
-                    " motståndaren har " + scoreRoundX.get(scoreRoundX.size() - 1));
+            output.println("SCORE KATEGORI " + currentround);
+            output.println("SCORE Dina poäng: " + scoreRoundY.get(scoreRoundY.size() - 1));
+            output.println("SCORE Motståndares poäng: " + scoreRoundX.get(scoreRoundX.size() - 1));
+            opponent.output.println("SCORE KATEGORI " + currentround);
+            opponent.output.println("SCORE Dina poäng: " + scoreRoundY.get(scoreRoundY.size() - 1));
+            opponent.output.println("SCORE Motståndares poäng: " + scoreRoundX.get(scoreRoundX.size() - 1));
 
 
             //output.println("CATEGORY Bra jobbat!");

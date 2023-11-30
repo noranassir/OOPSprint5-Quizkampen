@@ -111,6 +111,8 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         textarea.setEditable(false);
         textarea.setPreferredSize(new Dimension(300,400));
         textarea.setVisible(false);
+        textarea.setFocusable(false);
+        textarea.setRows(3);
 
         messageArea.setFocusable(false);
         messagePanel.add(messageArea);
