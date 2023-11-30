@@ -54,7 +54,7 @@ public class QuizServerPlayer extends Thread {
         return quizCategoryList;
     }
 
-
+   //importerar texten från textfil
     public void ImportQuestions() throws IOException {
 
 
@@ -76,7 +76,7 @@ public class QuizServerPlayer extends Thread {
 
     }
 
-
+        //går igenom importlist och sorterar i nya listor beroende om det är kategorier, frågor, svar och rätt eller fel
     public void SortQuestions() {
 
         int category = 0;
@@ -140,6 +140,7 @@ public class QuizServerPlayer extends Thread {
     }
 
 
+    //hjälpmetod för att shuffla kategorier, populerar categorylistrandom
     public void AmountOfCategories() {
         amountOfCategories = 0;
 
@@ -150,7 +151,7 @@ public class QuizServerPlayer extends Thread {
     }
 
 
-
+    //clearar, sedan går igenom frågelistan quizquestionlist. Quizquestionrandomizes blir populerad OM de matchar selectedkategory (alltså relevanta frågor)
     public void ImportSelectedQuestions() {
         quizQuestionRandomiser.clear();
         for (Question q : quizQuestionsList) {
@@ -164,6 +165,7 @@ public class QuizServerPlayer extends Thread {
     }
 
 
+    //populerar quizanswersafterrand listan med rätt alternativ för rätt fråga. Alltså rätt möjliga svar. Löper genom quizquestionrandomizer
     public void ImportAnswers() {
         for (Question q : quizQuestionRandomiser) {
             int temp1 = q.getQuizCategory();
@@ -178,6 +180,7 @@ public class QuizServerPlayer extends Thread {
     }
 
 
+    //slumpar svarsordning, så det i slutändan inte blir att samma knapp (högra hörnet) alltid har samma alternativ. populerar randomizedanswers
     public void RandomiseAnswers() {
 
         randomisedAnswers.clear();
@@ -233,12 +236,12 @@ public class QuizServerPlayer extends Thread {
             CategorySelection();                             //X spelaren väljer kategori push
 
             int correctAnswersPerRoundX = 0;
-            ImportSelectedQuestions();
+            ImportSelectedQuestions();                          //importerar relevanta frågor för kategorin (som hör ihop
 
             for (int j = 0; j < amountOfQuestions; j++) {
 
-                ImportAnswers();
-                RandomiseAnswers();
+                ImportAnswers();                                 //importera svarsalternativ
+                RandomiseAnswers();                           //randomiserar svar
 
 
                 int userAnswerInt = 0;    //SPARAR SVAR
@@ -272,9 +275,12 @@ public class QuizServerPlayer extends Thread {
                 for (Answer a : quizAnswersList) {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
+                            output.println("GRÖN");
                             correctAnswersPerRoundX++;
+                        }else {
+                            output.println("RÖD");
+                    }
 
-                        }
                     }
                 }
                 sleepy();
@@ -325,16 +331,30 @@ public class QuizServerPlayer extends Thread {
    //test merge
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //väljer kategori
     public void CategorySelection() throws IOException {       //X spelaren som sagt väljer kategori
 
 
-        Collections.shuffle(categoryListRandom, new Random());
+        Collections.shuffle(categoryListRandom, new Random());                   //slumpar listan av kategorier, så man har olika att välja på
         int categorySelector = 0;
         //     quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() +
         //      quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
         //     quizCategoryList.get(categoryListRandom.get(2)).getCategoryName();
 
-        output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
+        output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar, protokoll
         output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +
                 quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
                 quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
@@ -364,7 +384,7 @@ public class QuizServerPlayer extends Thread {
         //catch (NumberFormatException e){
         //   e.printStackTrace();
 
-        categorySelected = categorySelector;
+        categorySelected = categorySelector;       //categoryselector används för att vi ska se exakt vilken kategori man tröck på!
         categorySelected = categorySelected - 1;
         selectedCategory = categoryListRandom.get(categorySelected);
 
@@ -418,10 +438,13 @@ public class QuizServerPlayer extends Thread {
             for (Answer a : quizAnswersList) {
                 if (tempAnswer == a) {
                     if (a.getCorrectAnswer() == true) {
+                        opponent.output.println("GRÖN");
                         correctAnswersPerRoundY++;
-                    }
+                    } else {
+                        opponent.output.println("RÖD");
                 }
-            }
+                }
+            } sleepy();
         }
         //opponent.roundScore = correctAnswersPerRoundY;                 //sätter Y score för denna runda till... denna rundas score
         String temp = "" + correctAnswersPerRoundY;
@@ -475,7 +498,7 @@ public class QuizServerPlayer extends Thread {
 
 //denna är identisk till QuizGame, förutom att det är Y som väljer kategori
 
-    public int QuizGameY(int totalcorrecty) throws IOException {
+    public int QuizGameY(int totalcorrecty) throws IOException, InterruptedException {
 
                                                                     //funkar inte oavsätt opponent eller main... konstigt
         int totalCorrectAnswersY = totalcorrecty;                      //måste sparas någonstans
@@ -523,11 +546,15 @@ public class QuizServerPlayer extends Thread {
                 for (Answer a : quizAnswersList) {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
+                            opponent.output.println("GRÖN");
                             correctAnswersPerRoundY++;
-                           // opponent.roundScore = correctAnswersPerRoundY;         //sätter roundscore för Y spelare
+
+                        } else {
+                            opponent.output.println("RÖD");
                         }
                     }
                 }
+                sleepy();
             }
 
             //opponent.roundScore = correctAnswersPerRoundY;                 //sätter Y score för denna runda till... denna rundas score
@@ -617,7 +644,7 @@ public class QuizServerPlayer extends Thread {
 
     //nu får X spela med kategori som valdes av Y
 
-    public int opponentturnX(int correctanswerX) throws IOException {
+    public int opponentturnX(int correctanswerX) throws IOException, InterruptedException {
 
 
         output.println("SHIDE");
@@ -661,10 +688,15 @@ public class QuizServerPlayer extends Thread {
             for (Answer a : quizAnswersList) {
                 if (tempAnswer == a) {
                     if (a.getCorrectAnswer() == true) {
+                        output.println("GRÖN");
                         correctAnswersPerRound++;
+
+                    } else {
+                        output.println("RÖD");
                     }
                 }
             }
+            sleepy();
         }
         String temp = "" + correctAnswersPerRound;
         scoreRoundX.add(temp);
@@ -772,12 +804,12 @@ public class QuizServerPlayer extends Thread {
         if (tag == 'X') {
 
             try {
-                ImportQuestions();
+                ImportQuestions();        //importerar frågor från textfil
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            SortQuestions();
-            AmountOfCategories();
+            SortQuestions();                 //sorterar textfilen
+            AmountOfCategories();                 //hjälpmetod för kategorival
 
 
 
@@ -787,7 +819,7 @@ public class QuizServerPlayer extends Thread {
             //    throw new RuntimeException(e);
             //  }
             try {
-                QuizGame();
+                QuizGame();                  //NU börjar spelet
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {

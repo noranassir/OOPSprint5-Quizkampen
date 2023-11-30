@@ -193,7 +193,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                 }
 
                 else if (response.startsWith("SCORE")) {
-                    //textarea.setText("HEJ HEJ");
                     textarea.append(response.substring(6));
                     textarea.append("\n");
                 } else if (response.startsWith("SSHOW")) {
@@ -201,8 +200,21 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                     textarea.setVisible(true);
                 } else if (response.startsWith("SHIDE")) {
                     messageArea.setVisible(true);
-                    //textarea.setText(null);
                     textarea.setVisible(false);
+                }
+                else if (response.startsWith("RÖD")) {
+                    for (int i = 0; i < answerButtons.length; i++) {
+                            answerButtons[i].setVisible(true);
+                            answerButtons[i].setBackground(Color.RED);
+                            answerButtons[i].setPreferredSize(new Dimension(300, 100));
+                    }
+                }
+                else if (response.startsWith("GRÖN")) {
+                    for (int i = 0; i < answerButtons.length; i++) {
+                            answerButtons[i].setVisible(true);
+                            answerButtons[i].setBackground(Color.GREEN);
+                            answerButtons[i].setPreferredSize(new Dimension(300, 100));
+                    }
                 }
 
             }
@@ -232,6 +244,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             if (i < answerArray.length) {
                 answerButtons[i].setVisible(true);
                 answerButtons[i].setText(answerArray[i]);
+                answerButtons[i].setBackground(Color.WHITE);
                 answerButtons[i].setPreferredSize(new Dimension(300, 100));
             } else {
                 answerButtons[i].setVisible(false);
