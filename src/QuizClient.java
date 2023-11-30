@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class QuizClient extends JFrame implements Serializable, ActionListener {
 
@@ -26,7 +24,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
 
 
 
-    public QuizClient(String serverAddress) throws Exception {
+    public QuizClient(String serverAddress){
         try {
             socket = new Socket(serverAddress, 5554);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -92,8 +90,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
 
         messagePanel.add(textarea);
 
-
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -138,18 +134,15 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         String response;
         char tag = 'S';
 
-
         try {
             response = in.readLine();
             if (response.startsWith("Välkommen")) {
                 tag = response.charAt(9);
-
                 frame.setTitle("Quizkampen - Spelare " + tag);
             }
 
-
             while (true) {
-                response = in.readLine();    //den kommer fortsätta läsa vad servern ger oss, olika alternativ händer beroende på hur spelet utvecklas
+                response = in.readLine();
                 if (response.startsWith("MESSAGE")) {
                     messageArea.setText(response.substring(8));
                 }
@@ -194,7 +187,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             throw new RuntimeException(e);
         }
 
-
     }
     private void updateCategoryButtons(String categories) {
         String[] categoryArray = categories.split(",");
@@ -236,7 +228,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
     }
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         while(true) {
 
@@ -253,10 +245,4 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         out.println(clickedButton.getText());
     }
 }
-
-
-
-
-
-
 

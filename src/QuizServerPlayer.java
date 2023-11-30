@@ -45,13 +45,6 @@ public class QuizServerPlayer extends Thread {
     int categorySelected = 0;
     public int selectedCategory = 0;
 
-
-    //gjorde en getter for categorylist
-    public ArrayList<Category> getQuizCategoryList() {
-        return quizCategoryList;
-    }
-
-
     public void ImportQuestions() throws IOException {
 
 
@@ -263,13 +256,13 @@ public class QuizServerPlayer extends Thread {
 
             }
 
-            //sätter X score för denna runda till... denna rundas score
+
             String temp = "" + correctAnswersPerRoundX;
             scoreRoundX.add(temp);
             currentround++;
 
 
-            while (true) {                                                  //efter rundan är klar, skrivs svaret ut
+            while (true) {
                 output.println("REMOVE_BUTTONS");
                 output.println("MESSAGE Antalet rätt för denna runda:  " + correctAnswersPerRoundX);
                 output.println("CATEGORY Bra jobbat!");
@@ -284,12 +277,9 @@ public class QuizServerPlayer extends Thread {
             totalCorrectAnswersX = totalCorrectAnswersX + correctAnswersPerRoundX;
             quizAnswersAfterRand.clear();
             categoryListRandom.remove(categorySelected);
-            //bryter sig ur första
 
 
-            // JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
 
-            //opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName());
 
             opponent.output.println("REMOVE_BUTTONS");
             totalCorrectAnswersY = opponentturn(totalCorrectAnswersY);
