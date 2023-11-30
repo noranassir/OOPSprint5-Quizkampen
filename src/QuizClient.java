@@ -216,13 +216,10 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                             answerButtons[i].setPreferredSize(new Dimension(300, 100));
                     }
                 }
-
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     private void updateCategoryButtons(String categories) {
@@ -238,6 +235,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         }
     }
 
+
     private void updateAnswerButtons(String answers) {
         String[] answerArray = answers.split(",");
         for (int i = 0; i < answerButtons.length; i++) {
@@ -251,6 +249,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             }
         }
     }
+
 
     private void hideAllButtons() {
         for (JButton button : categoryButtons) {
@@ -278,7 +277,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             qc.frame.setVisible(true);
             qc.frame.setResizable(true);
             qc.play(); */
-
         }
     }
 

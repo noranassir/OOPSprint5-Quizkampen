@@ -12,10 +12,8 @@ public class ServerListener {
             while(true){
 
 
-                Game game = new Game();
-
-                QuizServerPlayer playerX = new QuizServerPlayer(serverS.accept(), 'X', game);
-                QuizServerPlayer playerY = new QuizServerPlayer(serverS.accept(), 'Y', game);
+                QuizServerPlayer playerX = new QuizServerPlayer(serverS.accept(), 'X');
+                QuizServerPlayer playerY = new QuizServerPlayer(serverS.accept(), 'Y');
 
                 playerX.setOpponent(playerY);
                 playerY.setOpponent(playerX);

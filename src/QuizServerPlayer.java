@@ -771,10 +771,9 @@ public class QuizServerPlayer extends Thread {
 
 
 
-    public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
+    public QuizServerPlayer(Socket socket, char tag) {
         this.socket = socket;
         this.tag = tag;
-        this.game = game;
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
