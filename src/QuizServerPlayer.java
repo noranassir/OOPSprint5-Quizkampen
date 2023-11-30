@@ -18,7 +18,6 @@ public class QuizServerPlayer extends Thread {
     BufferedReader input;
     PrintWriter output;
 
-    QuizServer game;
 
 
     private ArrayList<String> importList = new ArrayList<String>();
@@ -774,10 +773,9 @@ public int QuizGameY(int totalcorrecty) throws IOException, InterruptedException
 
 
 
-    public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
+    public QuizServerPlayer(Socket socket, char tag) {
         this.socket = socket;
         this.tag = tag;
-        this.game = game;
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
