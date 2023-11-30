@@ -699,7 +699,7 @@ public class QuizServerPlayer extends Thread {
             output.println("CATEGORY Bra jobbat!");
             input.readLine();
             output.println("REMOVE_BUTTONS");
-            opponent.roundScore = 0;
+            opponent.roundScore = 0;  //test
             break;  */
         }
 
