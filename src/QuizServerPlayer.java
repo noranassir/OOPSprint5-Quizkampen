@@ -160,7 +160,6 @@ public class QuizServerPlayer extends Thread {
                 quizQuestionRandomiser.add(q);
             }
         }
-
         Collections.shuffle(quizQuestionRandomiser, new Random());
     }
 
