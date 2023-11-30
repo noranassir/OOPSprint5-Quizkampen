@@ -169,8 +169,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     private void updateCategoryButtons(String categories) {

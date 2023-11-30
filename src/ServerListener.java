@@ -19,7 +19,7 @@ public class ServerListener {
                 playerX.start();
                 playerY.start();
             }
-            
+
 
         } catch (IOException e) {
             e.printStackTrace();
