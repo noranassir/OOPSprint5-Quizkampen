@@ -121,7 +121,6 @@ public class Game {
 
         }
 
-
     }
 
     public void AmountOfCategories() {
@@ -131,28 +130,6 @@ public class Game {
             categoryListRandom.add(amountOfCategories);
             amountOfCategories++;
         }
-    }
-
-
-
-    public void CategorySelection(){
-
-        Collections.shuffle(categoryListRandom, new Random());
-        String categorySelector = JOptionPane.showInputDialog("Välj en kategori: " +
-                "\n1: " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() +
-                "\n2: " + quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() +
-                "\n3: " + quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
-        try{
-            categorySelected = Integer.parseInt(categorySelector);
-        }
-        catch (NumberFormatException e){
-            e.printStackTrace();
-        }
-        categorySelected = categorySelected -1;
-        selectedCategory = categoryListRandom.get(categorySelected);
-
-
-
     }
 
     public void ImportSelectedQuestions(){
@@ -191,49 +168,5 @@ public class Game {
         for (int i = 0; i < 4; i++) {
             quizAnswersAfterRand.remove(0);
         }
-    }
-
-    public void QuizGame(){
-
-        System.out.println();
-        int totalCorrectAnswers = 0;
-        for (int i = 0; i < amountOfRounds; i++) {
-            CategorySelection();
-
-            int correctAnswersPerRound = 0;
-            ImportSelectedQuestions();
-
-            for (int j = 0; j < amountOfQuestions; j++) {
-
-                ImportAnswers();
-                RandomiseAnswers();
-                int userAnswerInt = 0;
-                String userAnswer = JOptionPane.showInputDialog(quizQuestionRandomiser.get(j).getQuizQuestion() +
-                        "\n" + randomisedAnswers.get(0).getQuizAnswer() +
-                        "\n" + randomisedAnswers.get(1).getQuizAnswer() +
-                        "\n" + randomisedAnswers.get(2).getQuizAnswer() +
-                        "\n" + randomisedAnswers.get(3).getQuizAnswer());
-                try{
-                    userAnswerInt = Integer.parseInt(userAnswer);
-                }
-                catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
-                userAnswerInt = userAnswerInt -1;
-                Object tempAnswer = randomisedAnswers.get(userAnswerInt);
-                for(Answer a : quizAnswersList){
-                    if(tempAnswer == a){
-                        if(a.getCorrectAnswer() == true){
-                            correctAnswersPerRound++;
-                        }
-                    }
-                }
-            }
-            JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
-            totalCorrectAnswers = totalCorrectAnswers + correctAnswersPerRound;
-            quizAnswersAfterRand.clear();
-            categoryListRandom.remove(categorySelected);
-        }
-        JOptionPane.showMessageDialog(null, "Totalt antal rätt: " + totalCorrectAnswers);
     }
 }

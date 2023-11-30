@@ -10,167 +10,15 @@ public class QuizServerPlayer extends Thread {
     Socket socket;
     BufferedReader input;
     PrintWriter output;
-    QuizServer game;
+    Game game;
     private int currentround = 0;
-    int amountOfCategories = 0;
     int categorySelected = 0;
     public int selectedCategory = 0;
-
-
-    private ArrayList<String> importList = new ArrayList<String>();
-    private ArrayList<Category> quizCategoryList = new ArrayList<>();
-    private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
-    private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
     private int amountOfRounds = 0;
     private int amountOfQuestions = 0;
 
-
-    //Temporära listor för att modifieras
-
-    private ArrayList<Integer> categoryListRandom = new ArrayList<>();
-    private ArrayList<Question> quizQuestionRandomiser = new ArrayList<>();
-    private ArrayList<Answer> quizAnswersAfterRand = new ArrayList<>();
-    private ArrayList<Answer> randomisedAnswers = new ArrayList<>();
-
     private List<String> scoreRoundX = new ArrayList<>();
     private List<String> scoreRoundY = new ArrayList<>();
-
-
-    public void ImportQuestions() throws IOException {
-
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))) {
-
-            while (true) {
-                String input = bufferedReader.readLine();
-
-                if (input != null) {
-                    importList.add(input);       //importlista är där vi får in allt i filen
-                } else {
-                    break;
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public void SortQuestions() {
-
-        int category = 0;
-        char tempChar;
-        int questionNumber = 0;
-        int answerNumber = 0;
-
-        for (String tempStringFromList : importList) {
-            if (tempStringFromList.length() > 0) {
-                tempChar = tempStringFromList.charAt(0);
-
-                if (tempChar == '#') {
-                    StringBuilder sb = new StringBuilder(tempStringFromList);
-                    sb.deleteCharAt(0);
-                    sb.deleteCharAt(0);
-                    String temp = String.valueOf(sb);
-                    Category category1 = new Category(category, temp);
-                    quizCategoryList.add(category1);
-                    category++;
-                    questionNumber = 0;
-                }
-
-                if (tempChar == '%') {
-                    StringBuilder sb = new StringBuilder(tempStringFromList);
-                    sb.deleteCharAt(0);
-                    sb.deleteCharAt(0);
-                    String tempString = String.valueOf(sb);
-                    Question question = new Question(category, questionNumber, tempString);
-                    quizQuestionsList.add(question);
-                    answerNumber = 0;
-                    questionNumber++;
-
-                }
-
-                if (tempChar == '1') {
-                    StringBuilder sb = new StringBuilder(tempStringFromList);
-                    sb.deleteCharAt(0);
-                    sb.deleteCharAt(0);
-                    String tempString = String.valueOf(sb);
-                    String tempString2 = String.valueOf(questionNumber);
-                    Answer answer = new Answer(category, questionNumber - 1, answerNumber, tempString, true);
-                    quizAnswersList.add(answer);
-                    answerNumber++;
-
-                }
-
-                if (tempChar == '2') {
-                    StringBuilder sb = new StringBuilder(tempStringFromList);
-                    sb.deleteCharAt(0);
-                    sb.deleteCharAt(0);
-                    String tempString = String.valueOf(sb);
-                    Answer answer = new Answer(category, questionNumber - 1, answerNumber, tempString, false);
-                    quizAnswersList.add(answer);
-                    answerNumber++;
-
-                }
-
-            }
-
-        }
-    }
-
-
-    public void AmountOfCategories() {
-        amountOfCategories = 0;
-
-        for (int i = 0; i < quizCategoryList.size(); i++) {
-            categoryListRandom.add(amountOfCategories);
-            amountOfCategories++;
-        }
-    }
-
-
-
-    public void ImportSelectedQuestions() {
-        quizQuestionRandomiser.clear();
-        for (Question q : quizQuestionsList) {
-            int temp1 = q.getQuizCategory() - 1;
-            if (temp1 == selectedCategory) {
-                quizQuestionRandomiser.add(q);
-            }
-        }
-
-        Collections.shuffle(quizQuestionRandomiser, new Random());
-    }
-
-
-    public void ImportAnswers() {
-        for (Question q : quizQuestionRandomiser) {
-            int temp1 = q.getQuizCategory();
-            int temp2 = q.getQuestionNumber();
-            for (Answer a : quizAnswersList) {
-                if (temp1 == a.getQuizCategory() && temp2 == a.getQuestionNumber()) {
-                    quizAnswersAfterRand.add(a);
-                }
-            }
-
-        }
-    }
-
-
-    public void RandomiseAnswers() {
-
-        randomisedAnswers.clear();
-        for (int i = 0; i < 4; i++) {
-            randomisedAnswers.add(quizAnswersAfterRand.get(i));
-        }
-        Collections.shuffle(randomisedAnswers, new Random());
-        for (int i = 0; i < 4; i++) {
-            quizAnswersAfterRand.remove(0);
-        }
-    }
-
 
 
 
@@ -199,33 +47,33 @@ public class QuizServerPlayer extends Thread {
             CategorySelection();                             //X spelaren väljer kategori push
 
             int correctAnswersPerRoundX = 0;
-            ImportSelectedQuestions();
+            game.ImportSelectedQuestions();
 
             for (int j = 0; j < amountOfQuestions; j++) {
 
-                ImportAnswers();
-                RandomiseAnswers();
+                game.ImportAnswers();
+                game.RandomiseAnswers();
 
 
                 int userAnswerInt = 0;    //SPARAR SVAR
                 String inputtext = "";
 
-                output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
-                output.println("ANSWERS " + randomisedAnswers.get(0).getQuizAnswer() + ", " + randomisedAnswers.get(1).getQuizAnswer() + ", " +
-                        randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
+                output.println("MESSAGE " + game.quizQuestionRandomiser.get(j).getQuizQuestion());
+                output.println("ANSWERS " + game.randomisedAnswers.get(0).getQuizAnswer() + ", " + game.randomisedAnswers.get(1).getQuizAnswer() + ", " +
+                        game.randomisedAnswers.get(2).getQuizAnswer() + ", " + game.randomisedAnswers.get(3).getQuizAnswer());
 
                 while (true) {
                     inputtext = input.readLine().trim();
-                    if (inputtext.equals(randomisedAnswers.get(0).getQuizAnswer())) {
+                    if (inputtext.equals(game.randomisedAnswers.get(0).getQuizAnswer())) {
                         userAnswerInt = 1;
                         break;
-                    } else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
+                    } else if (inputtext.equals(game.randomisedAnswers.get(1).getQuizAnswer())) {
                         userAnswerInt = 2;
                         break;
-                    } else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
+                    } else if (inputtext.equals(game.randomisedAnswers.get(2).getQuizAnswer())) {
                         userAnswerInt = 3;
                         break;
-                    } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
+                    } else if (inputtext.equals(game.randomisedAnswers.get(3).getQuizAnswer())) {
                         userAnswerInt = 4;
                         break;
 
@@ -234,8 +82,8 @@ public class QuizServerPlayer extends Thread {
 
 
                 userAnswerInt = userAnswerInt - 1;
-                Object tempAnswer = randomisedAnswers.get(userAnswerInt);
-                for (Answer a : quizAnswersList) {
+                Object tempAnswer = game.randomisedAnswers.get(userAnswerInt);
+                for (Answer a : game.quizAnswersList) {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundX++;
@@ -263,8 +111,8 @@ public class QuizServerPlayer extends Thread {
             }
 
             totalCorrectAnswersX = totalCorrectAnswersX + correctAnswersPerRoundX;
-            quizAnswersAfterRand.clear();
-            categoryListRandom.remove(categorySelected);
+            game.quizAnswersAfterRand.clear();
+            game.categoryListRandom.remove(categorySelected);
             //bryter sig ur första
 
 
@@ -287,27 +135,27 @@ public class QuizServerPlayer extends Thread {
     public void CategorySelection() throws IOException {       //X spelaren som sagt väljer kategori
 
 
-        Collections.shuffle(categoryListRandom, new Random());
+        Collections.shuffle(game.categoryListRandom, new Random());
         int categorySelector = 0;
 
         output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
-        output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +
-                quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
-                quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
+        output.println("CATEGORY " + game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName() + ", " +
+                game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName() + ", " +
+                game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName());
 
         while (true) {
             String inputtext = input.readLine().trim();
-            if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(0)).getCategoryName())) {
+            if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName())) {
 
                 categorySelector = 1;
                 output.println("REMOVE_BUTTONS");
                 break;
-            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(1)).getCategoryName())) {
+            } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName())) {
                 categorySelector = 2;
                 output.println("REMOVE_BUTTONS");
                 break;
 
-            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(2)).getCategoryName())) {
+            } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName())) {
                 categorySelector = 3;
                 output.println("REMOVE_BUTTONS");
                 break;
@@ -316,7 +164,7 @@ public class QuizServerPlayer extends Thread {
 
         categorySelected = categorySelector;
         categorySelected = categorySelected - 1;
-        selectedCategory = categoryListRandom.get(categorySelected);
+        selectedCategory = game.categoryListRandom.get(categorySelected);
 
     }
 
@@ -333,28 +181,28 @@ public class QuizServerPlayer extends Thread {
         for (int j = 0; j < amountOfQuestions; j++) {
 
 
-            ImportAnswers();
-            RandomiseAnswers();
+            game.ImportAnswers();
+            game.RandomiseAnswers();
 
             int userAnswerInt = 0;    //SPARAR SVAR
             String inputtext = "";
 
-            opponent.output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
-            opponent.output.println("ANSWERS " + randomisedAnswers.get(0).getQuizAnswer() + ", " + randomisedAnswers.get(1).getQuizAnswer() + ", " +
-                    randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
+            opponent.output.println("MESSAGE " + game.quizQuestionRandomiser.get(j).getQuizQuestion());
+            opponent.output.println("ANSWERS " + game.randomisedAnswers.get(0).getQuizAnswer() + ", " + game.randomisedAnswers.get(1).getQuizAnswer() + ", " +
+                    game.randomisedAnswers.get(2).getQuizAnswer() + ", " + game.randomisedAnswers.get(3).getQuizAnswer());
 
             while (true) {
                 inputtext = opponent.input.readLine().trim();
-                if (inputtext.equals(randomisedAnswers.get(0).getQuizAnswer())) {
+                if (inputtext.equals(game.randomisedAnswers.get(0).getQuizAnswer())) {
                     userAnswerInt = 1;
                     break;
-                } else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
+                } else if (inputtext.equals(game.randomisedAnswers.get(1).getQuizAnswer())) {
                     userAnswerInt = 2;
                     break;
-                } else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
+                } else if (inputtext.equals(game.randomisedAnswers.get(2).getQuizAnswer())) {
                     userAnswerInt = 3;
                     break;
-                } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
+                } else if (inputtext.equals(game.randomisedAnswers.get(3).getQuizAnswer())) {
                     userAnswerInt = 4;
                     break;
                 }
@@ -362,8 +210,8 @@ public class QuizServerPlayer extends Thread {
 
 
             userAnswerInt = userAnswerInt - 1;
-            Object tempAnswer = randomisedAnswers.get(userAnswerInt);
-            for (Answer a : quizAnswersList) {
+            Object tempAnswer = game.randomisedAnswers.get(userAnswerInt);
+            for (Answer a : game.quizAnswersList) {
                 if (tempAnswer == a) {
                     if (a.getCorrectAnswer() == true) {
                         correctAnswersPerRoundY++;
@@ -381,9 +229,9 @@ public class QuizServerPlayer extends Thread {
             opponent.output.println("SSHOW");
             output.println("SSHOW");
 
-                opponent.output.println("SCORE  Runda " + currentround + " poäng är" + scoreRoundY.get(scoreRoundY.size() - 1) +
+                opponent.output.println("SCORE Runda " + currentround + " poäng är " + scoreRoundY.get(scoreRoundY.size() - 1) +
                         " Motståndaren fick " + scoreRoundX.get(scoreRoundX.size() - 1));
-                output.println("SCORE Runda " + currentround + " poäng är" + scoreRoundX.get(scoreRoundX.size() - 1) +
+                output.println("SCORE Runda " + currentround + " poäng är " + scoreRoundX.get(scoreRoundX.size() - 1) +
                         " Motståndaren fick " + scoreRoundY.get(scoreRoundY.size() - 1));
 
 
@@ -397,8 +245,8 @@ public class QuizServerPlayer extends Thread {
         }
 
         totalCorrectAnswersY = totalCorrectAnswersY + correctAnswersPerRoundY;
-        quizAnswersAfterRand.clear();
-        categoryListRandom.remove(categorySelected);
+        game.quizAnswersAfterRand.clear();
+        game.categoryListRandom.remove(categorySelected);
         return totalCorrectAnswersY;
 
     }
@@ -416,33 +264,33 @@ public class QuizServerPlayer extends Thread {
             CategorySelectionY();                      //y väljer kategori
 
             int correctAnswersPerRoundY = 0;
-            ImportSelectedQuestions();
+            game.ImportSelectedQuestions();
 
             for (int j = 0; j < amountOfQuestions; j++) {
 
-                ImportAnswers();
-                RandomiseAnswers();
+                game.ImportAnswers();
+                game.RandomiseAnswers();
 
 
                 int userAnswerInt = 0;    //SPARAR SVAR
                 String inputtext = "";
 
-                opponent.output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
-                opponent.output.println("ANSWERS " + randomisedAnswers.get(0).getQuizAnswer() + ", " + randomisedAnswers.get(1).getQuizAnswer() + ", " +
-                        randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
+                opponent.output.println("MESSAGE " + game.quizQuestionRandomiser.get(j).getQuizQuestion());
+                opponent.output.println("ANSWERS " + game.randomisedAnswers.get(0).getQuizAnswer() + ", " + game.randomisedAnswers.get(1).getQuizAnswer() + ", " +
+                        game.randomisedAnswers.get(2).getQuizAnswer() + ", " + game.randomisedAnswers.get(3).getQuizAnswer());
 
                 while (true) {
                     inputtext = opponent.input.readLine().trim();
-                    if (inputtext.equals(randomisedAnswers.get(0).getQuizAnswer())) {
+                    if (inputtext.equals(game.randomisedAnswers.get(0).getQuizAnswer())) {
                         userAnswerInt = 1;
                         break;
-                    } else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
+                    } else if (inputtext.equals(game.randomisedAnswers.get(1).getQuizAnswer())) {
                         userAnswerInt = 2;
                         break;
-                    } else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
+                    } else if (inputtext.equals(game.randomisedAnswers.get(2).getQuizAnswer())) {
                         userAnswerInt = 3;
                         break;
-                    } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
+                    } else if (inputtext.equals(game.randomisedAnswers.get(3).getQuizAnswer())) {
                         userAnswerInt = 4;
                         break;
                     }
@@ -450,8 +298,8 @@ public class QuizServerPlayer extends Thread {
 
 
                 userAnswerInt = userAnswerInt - 1;
-                Object tempAnswer = randomisedAnswers.get(userAnswerInt);
-                for (Answer a : quizAnswersList) {
+                Object tempAnswer = game.randomisedAnswers.get(userAnswerInt);
+                for (Answer a : game.quizAnswersList) {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundY++;
@@ -477,8 +325,8 @@ public class QuizServerPlayer extends Thread {
 
 
             totalCorrectAnswersY = totalCorrectAnswersY + correctAnswersPerRoundY;
-            quizAnswersAfterRand.clear();
-            categoryListRandom.remove(categorySelected);
+            game.quizAnswersAfterRand.clear();
+            game.categoryListRandom.remove(categorySelected);
             break;                                              //bryter sig ur första
 
         }
@@ -493,28 +341,28 @@ public class QuizServerPlayer extends Thread {
     public void CategorySelectionY() throws IOException {
 
 
-        Collections.shuffle(categoryListRandom, new Random());
+        Collections.shuffle(game.categoryListRandom, new Random());
         int categorySelector = 0;
 
 
         opponent.output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
-        opponent.output.println("CATEGORY " + quizCategoryList.get(categoryListRandom.get(0)).getCategoryName() + ", " +
-                quizCategoryList.get(categoryListRandom.get(1)).getCategoryName() + ", " +
-                quizCategoryList.get(categoryListRandom.get(2)).getCategoryName());
+        opponent.output.println("CATEGORY " + game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName() + ", " +
+                game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName() + ", " +
+                game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName());
 
         while (true) {
             String inputtext = opponent.input.readLine().trim();
-            if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(0)).getCategoryName())) {
+            if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName())) {
 
                 categorySelector = 1;
                 opponent.output.println("REMOVE_BUTTONS");
                 break;
-            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(1)).getCategoryName())) {
+            } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName())) {
                 categorySelector = 2;
                 opponent.output.println("REMOVE_BUTTONS");
                 break;
 
-            } else if (inputtext.equals(quizCategoryList.get(categoryListRandom.get(2)).getCategoryName())) {
+            } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName())) {
                 categorySelector = 3;
                 opponent.output.println("REMOVE_BUTTONS");
                 break;
@@ -524,7 +372,7 @@ public class QuizServerPlayer extends Thread {
 
         categorySelected = categorySelector;
         categorySelected = categorySelected - 1;
-        selectedCategory = categoryListRandom.get(categorySelected);
+        selectedCategory = game.categoryListRandom.get(categorySelected);
 
     }
 
@@ -542,28 +390,28 @@ public class QuizServerPlayer extends Thread {
         for (int j = 0; j < amountOfQuestions; j++) {
 
 
-            ImportAnswers();
-            RandomiseAnswers();
+            game.ImportAnswers();
+            game.RandomiseAnswers();
 
             int userAnswerInt = 0;    //SPARAR SVAR
             String inputtext = "";
 
-            output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
-            output.println("ANSWERS " + randomisedAnswers.get(0).getQuizAnswer() + ", " + randomisedAnswers.get(1).getQuizAnswer() + ", " +
-                    randomisedAnswers.get(2).getQuizAnswer() + ", " + randomisedAnswers.get(3).getQuizAnswer());
+            output.println("MESSAGE " + game.quizQuestionRandomiser.get(j).getQuizQuestion());
+            output.println("ANSWERS " + game.randomisedAnswers.get(0).getQuizAnswer() + ", " + game.randomisedAnswers.get(1).getQuizAnswer() + ", " +
+                    game.randomisedAnswers.get(2).getQuizAnswer() + ", " + game.randomisedAnswers.get(3).getQuizAnswer());
 
             while (true) {
                 inputtext = input.readLine().trim();
-                if (inputtext.equals(randomisedAnswers.get(0).getQuizAnswer())) {
+                if (inputtext.equals(game.randomisedAnswers.get(0).getQuizAnswer())) {
                     userAnswerInt = 1;
                     break;
-                } else if (inputtext.equals(randomisedAnswers.get(1).getQuizAnswer())) {
+                } else if (inputtext.equals(game.randomisedAnswers.get(1).getQuizAnswer())) {
                     userAnswerInt = 2;
                     break;
-                } else if (inputtext.equals(randomisedAnswers.get(2).getQuizAnswer())) {
+                } else if (inputtext.equals(game.randomisedAnswers.get(2).getQuizAnswer())) {
                     userAnswerInt = 3;
                     break;
-                } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
+                } else if (inputtext.equals(game.randomisedAnswers.get(3).getQuizAnswer())) {
                     userAnswerInt = 4;
                     break;
                 }
@@ -571,8 +419,8 @@ public class QuizServerPlayer extends Thread {
 
 
             userAnswerInt = userAnswerInt - 1;
-            Object tempAnswer = randomisedAnswers.get(userAnswerInt);
-            for (Answer a : quizAnswersList) {
+            Object tempAnswer = game.randomisedAnswers.get(userAnswerInt);
+            for (Answer a : game.quizAnswersList) {
                 if (tempAnswer == a) {
                     if (a.getCorrectAnswer() == true) {
                         correctAnswersPerRound++;
@@ -607,8 +455,8 @@ public class QuizServerPlayer extends Thread {
 
 
         totalCorrectAnswersX = totalCorrectAnswersX + correctAnswersPerRound;
-        quizAnswersAfterRand.clear();
-        categoryListRandom.remove(categorySelected);
+        game.quizAnswersAfterRand.clear();
+        game.categoryListRandom.remove(categorySelected);
 
         return totalCorrectAnswersX;
     }
@@ -621,10 +469,11 @@ public class QuizServerPlayer extends Thread {
 
     }
 
-    public QuizServerPlayer(Socket socket, char tag, QuizServer game) {
+    public QuizServerPlayer(Socket socket, char tag, Game game) {
         this.socket = socket;
         this.tag = tag;
         this.game = game;
+
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -653,12 +502,12 @@ public class QuizServerPlayer extends Thread {
         if (tag == 'X') {
 
             try {
-                ImportQuestions();
+                game.ImportQuestions();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            SortQuestions();
-            AmountOfCategories();
+            game.SortQuestions();
+            game.AmountOfCategories();
 
             try {
                 QuizGame();
@@ -676,7 +525,6 @@ public class QuizServerPlayer extends Thread {
 
         }
     }
-
 }
 
 
