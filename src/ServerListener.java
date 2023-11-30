@@ -12,7 +12,7 @@ public class ServerListener {
             while(true){
 
 
-                QuizServer game = new QuizServer();
+                Game game = new Game();
 
                 QuizServerPlayer playerX = new QuizServerPlayer(serverS.accept(), 'X', game);
                 QuizServerPlayer playerY = new QuizServerPlayer(serverS.accept(), 'Y', game);
@@ -42,12 +42,6 @@ public class ServerListener {
 
     public static void main(String[] args) {
 
-        QuizServer game = new QuizServer();
-        String yo = "hej";
-        yo = game.testingMethod(yo);
-
-
-        System.out.println(yo);
         ServerListener sl = new ServerListener();
 
 

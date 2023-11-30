@@ -7,15 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 
 public class QuizClient extends JFrame implements Serializable, ActionListener {
 
     private JFrame frame = new JFrame("Quizkampen");
     private JPanel messagePanel = new JPanel(new FlowLayout());
     private JTextPane messageArea = new JTextPane();
-
     private JTextArea textarea = new JTextArea();
     private JButton[] categoryButtons = new JButton[3];
     private JButton[] answerButtons = new JButton[4];
@@ -23,6 +20,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
+    Game game;
 
 
     public QuizClient(String serverAddress) throws Exception {
@@ -38,30 +36,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         throw new RuntimeException(e);
     }
 }
-        /*
-        {
-
-            messageLabel.setText("Väntar på spelare");
-            JPanel board = new JPanel();
-            frame.getContentPane().add(messageLabel, "North");
-
-
-            //adda knappar här under? eller senare
-
-            frame.getContentPane().add(board, "Center");
-
-            kategori1.setVisible(false);            //knappar
-            kategori2.setVisible(false);
-            kategori3.setVisible(false);
-
-            board.add(kategori1);
-            board.add(kategori2);
-            board.add(kategori3);
-
-
-        } */
-
-
 
     private void initializeUI() {
         int r = 51;
@@ -99,13 +73,10 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         messageArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         messageArea.setText("Waiting for players...");
         messageArea.setFont(new Font("Serif", Font.PLAIN, 20));
-        //messageArea.setHorizontalAlignment(SwingConstants.CENTER);
         messageArea.setPreferredSize(new Dimension(550, 100));
         messageArea.setBackground(Color.WHITE);
         messageArea.setOpaque(true);
         messageArea.setEditable(false);
-        //messageArea.setLineWrap(true);
-        //messageArea.setWrapStyleWord(true);
 
         textarea.setText("");
         textarea.setEditable(false);
@@ -121,8 +92,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         frame.getContentPane().add(boardScore, "South");
 
         messagePanel.add(textarea);
-
-
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -167,13 +136,11 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
     public void play() throws Exception {
         String response;
         char tag = 'S';
-        // char opponenttag = 'P';
 
         try {
             response = in.readLine();
             if (response.startsWith("Välkommen")) {
                 tag = response.charAt(9);
-               // opponenttag = (tag == 'X' ? 'Y' : 'X');
                 frame.setTitle("Quizkampen - Spelare " + tag);
             }
 
@@ -193,7 +160,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                 }
 
                 else if (response.startsWith("SCORE")) {
-                    //textarea.setText("HEJ HEJ");
+
                     textarea.append(response.substring(6));
                     textarea.append("\n");
                 } else if (response.startsWith("SSHOW")) {
@@ -201,7 +168,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                     textarea.setVisible(true);
                 } else if (response.startsWith("SHIDE")) {
                     messageArea.setVisible(true);
-                    //textarea.setText(null);
                     textarea.setVisible(false);
                 }
 
@@ -209,7 +175,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
 
     }
 
@@ -230,6 +195,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         String[] answerArray = answers.split(",");
         for (int i = 0; i < answerButtons.length; i++) {
             if (i < answerArray.length) {
+                answerButtons[i].setBackground(Color.white);
                 answerButtons[i].setVisible(true);
                 answerButtons[i].setText(answerArray[i]);
                 answerButtons[i].setPreferredSize(new Dimension(300, 100));
@@ -249,79 +215,32 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
     }
 
 
-
-
-
-
-
     public static void main(String[] args) throws Exception {
 
         while(true) {
 
             String serverAddress = "127.0.0.1";
             QuizClient qc = new QuizClient(serverAddress);
-            /*qc.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            qc.frame.setSize(600,400);
-            qc.frame.setVisible(true);
-            qc.frame.setResizable(true);
-            qc.play(); */
-
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton clickedButton = (JButton) e.getSource();
-        out.println(clickedButton.getText());             //skickar ut texten på knappen
+        out.println(clickedButton.getText());
+
+     /*   for(Answer answer : game.quizAnswersList){
+            if(answer.getQuizAnswer() == clickedButton.getText() && answer.getCorrectAnswer() == true){
+                clickedButton.setBackground(Color.GREEN);
+            }
+            else {
+                clickedButton.setBackground(Color.RED);
+            }
+        }*/
+
+
     }
 }
-
-
-
-
-
-
-
-
-
-/*
-
-            while (true) {
-                response = in.readLine();    //den kommer fortsätta läsa vad servern ger oss, olika alternativ händer beroende på hur spelet utvecklas
-                if (response.startsWith("MESSAGE")) {
-                    messageLabel.setText(response.substring(8));
-                }
-                else if (response.startsWith("KNAPP1")) {
-                    kategori1.setVisible(true);
-                    kategori1.addActionListener(this);                        //test
-                    kategori1.setText(response.substring(7));
-                }
-                else if (response.startsWith("KNAPP2")) {
-                    kategori2.setVisible(true);
-                    kategori2.addActionListener(this);                    //test
-                    kategori2.setText(response.substring(7));
-                }
-                else if (response.startsWith("KNAPP3")) {
-                    kategori3.setVisible(true);
-                    kategori3.addActionListener(this);                          //test
-                    kategori3.setText((response.substring(7)));
-                }
-                else if (response.startsWith("TABORTKNAPP")) {
-                    kategori1.setVisible(false);
-                    kategori2.setVisible(false);
-                    kategori3.setVisible(false);
-                }
-            }
-
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
- */
-
-
-
 
 
 
