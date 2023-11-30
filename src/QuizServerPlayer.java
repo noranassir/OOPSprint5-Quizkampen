@@ -1,9 +1,6 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /* Här händer spelarlogik, där startar också threadsen som kör för båda våra spelare!
  */
@@ -28,8 +25,8 @@ public class QuizServerPlayer extends Thread {
     private ArrayList<Category> quizCategoryList = new ArrayList<>();
     private ArrayList<Question> quizQuestionsList = new ArrayList<Question>();
     private ArrayList<Answer> quizAnswersList = new ArrayList<Answer>();
-    private int amountOfRounds = 2;
-    private int amountOfQuestions = 3;
+    private int amountOfRounds = 0;
+    private int amountOfQuestions = 0;
 
 
     //Temporära listor för att modifieras
@@ -67,7 +64,7 @@ public class QuizServerPlayer extends Thread {
                 String input = bufferedReader.readLine();
 
                 if (input != null) {
-                    importList.add(input);
+                    importList.add(input);       //importlista är där vi får in allt i filen
                 } else {
                     break;
                 }
@@ -216,6 +213,17 @@ public class QuizServerPlayer extends Thread {
     public void QuizGame() throws IOException, InterruptedException {
 
 
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream(".\\src\\Settings.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions", "3"));
+        amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds", "3"));
+
+
         int totalCorrectAnswersX = 0;
         int totalCorrectAnswersY = 0;
 
@@ -254,6 +262,7 @@ public class QuizServerPlayer extends Thread {
                     } else if (inputtext.equals(randomisedAnswers.get(3).getQuizAnswer())) {
                         userAnswerInt = 4;
                         break;
+
                     }
                 }
 
@@ -265,10 +274,10 @@ public class QuizServerPlayer extends Thread {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundX++;
 
-
                         }
                     }
                 }
+                sleepy();
             }
 
             //roundScore = correctAnswersPerRoundX;                 //sätter X score för denna runda till... denna rundas score
@@ -711,6 +720,12 @@ public class QuizServerPlayer extends Thread {
 
 
 
+
+    public void sleepy() throws InterruptedException {
+        Thread.sleep(500);
+
+
+    }
 
 
 
