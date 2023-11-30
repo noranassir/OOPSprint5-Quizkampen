@@ -12,7 +12,6 @@ public class ServerListener {
             while(true){
 
 
-
                 QuizServerPlayer playerX = new QuizServerPlayer(serverS.accept(), 'X');
                 QuizServerPlayer playerY = new QuizServerPlayer(serverS.accept(), 'Y');
 
@@ -32,8 +31,6 @@ public class ServerListener {
         }
 
     }
-
-
 
 
     public static void main(String[] args) {
