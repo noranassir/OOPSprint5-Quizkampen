@@ -17,6 +17,9 @@ public class QuizServerPlayer extends Thread {
     private int amountOfRounds = 0;
     private int amountOfQuestions = 0;
 
+    int totalCorrectAnswersX = 0;
+    int totalCorrectAnswersY = 0;
+
     private List<String> scoreRoundX = new ArrayList<>();
     private List<String> scoreRoundY = new ArrayList<>();
 
@@ -53,12 +56,9 @@ public class QuizServerPlayer extends Thread {
         amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions", "3"));
         amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds", "3"));
 
-        int totalCorrectAnswersX = 0;
-        int totalCorrectAnswersY = 0;
-
         for (int i = 0; i < amountOfRounds; i++) {
 
-            CategorySelection();                             //X spelaren väljer kategori push
+            categorySelection(input, output);                             //X spelaren väljer kategori push
 
             int correctAnswersPerRoundX = 0;
             game.importSelectedQuestions();
@@ -120,7 +120,6 @@ public class QuizServerPlayer extends Thread {
                 output.println("CATEGORY Bra jobbat!");
                 input.readLine();
                 break;
-
             }
 
             totalCorrectAnswersX = totalCorrectAnswersX + correctAnswersPerRoundX;
@@ -136,47 +135,42 @@ public class QuizServerPlayer extends Thread {
         }
 
         output.println("REMOVE_BUTTONS");
-        output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersX + "motståndaren fick: " + totalCorrectAnswersY);
+        output.println("MESSAGE Totala poäng" + ", " + totalCorrectAnswersX + " Motståndaren fick: " + totalCorrectAnswersY);
         opponent.output.println("REMOVE_BUTTONS");
         opponent.output.println("SHIDE");
-        opponent.output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersY + "motståndaren fick: " + totalCorrectAnswersX);
+        opponent.output.println("MESSAGE Totala poäng" + ", " + totalCorrectAnswersY + " Motståndaren fick: " + totalCorrectAnswersX);
     }
 
-
-    public void CategorySelection() throws IOException {       //X spelaren som sagt väljer kategori
-
-
+    //Metod som tar spelares input eller output som inparametrar och generererar kategorival
+    public void categorySelection(BufferedReader playerInput, PrintWriter playerOutput) throws IOException {
         Collections.shuffle(game.categoryListRandom, new Random());
         int categorySelector = 0;
 
-        output.println("MESSAGE Välj en kategori");                                                                       //väljer bland knappar
-        output.println("CATEGORY " + game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName() + ", " +
+        playerOutput.println("MESSAGE Välj en kategori"); // Adjust the message as needed
+        playerOutput.println("CATEGORY " +
+                game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName() + ", " +
                 game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName() + ", " +
                 game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName());
 
         while (true) {
-            String inputtext = input.readLine().trim();
+            String inputtext = playerInput.readLine().trim();
             if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName())) {
-
                 categorySelector = 1;
-                output.println("REMOVE_BUTTONS");
+                playerOutput.println("REMOVE_BUTTONS");
                 break;
             } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName())) {
                 categorySelector = 2;
-                output.println("REMOVE_BUTTONS");
+                playerOutput.println("REMOVE_BUTTONS");
                 break;
-
             } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName())) {
                 categorySelector = 3;
-                output.println("REMOVE_BUTTONS");
+                playerOutput.println("REMOVE_BUTTONS");
                 break;
             }
         }
 
-        categorySelected = categorySelector;
-        categorySelected = categorySelected - 1;
+        categorySelected = categorySelector - 1;
         selectedCategory = game.categoryListRandom.get(categorySelected);
-
     }
 
 
@@ -269,7 +263,7 @@ public class QuizServerPlayer extends Thread {
 
         for (int i = 0; i < amountOfRounds; i++) {
 
-            CategorySelectionY();                      //y väljer kategori
+            categorySelection(opponent.input, opponent.output);                      //y väljer kategori
 
             int correctAnswersPerRoundY = 0;
             game.importSelectedQuestions();
@@ -341,46 +335,6 @@ public class QuizServerPlayer extends Thread {
 
         output.println("REMOVE_BUTTONS");
               return totalCorrectAnswersY;
-    }
-
-      //som sagt y väljer kategori
-
-    public void CategorySelectionY() throws IOException {
-
-
-        Collections.shuffle(game.categoryListRandom, new Random());
-        int categorySelector = 0;
-
-
-        opponent.output.println("MESSAGE välj en kategori!");                                                                       //väljer bland knappar
-        opponent.output.println("CATEGORY " + game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName() + ", " +
-                game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName() + ", " +
-                game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName());
-
-        while (true) {
-            String inputtext = opponent.input.readLine().trim();
-            if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(0)).getCategoryName())) {
-
-                categorySelector = 1;
-                opponent.output.println("REMOVE_BUTTONS");
-                break;
-            } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(1)).getCategoryName())) {
-                categorySelector = 2;
-                opponent.output.println("REMOVE_BUTTONS");
-                break;
-
-            } else if (inputtext.equals(game.quizCategoryList.get(game.categoryListRandom.get(2)).getCategoryName())) {
-                categorySelector = 3;
-                opponent.output.println("REMOVE_BUTTONS");
-                break;
-            }
-        }
-
-
-        categorySelected = categorySelector;
-        categorySelected = categorySelected - 1;
-        selectedCategory = game.categoryListRandom.get(categorySelected);
-
     }
 
 
