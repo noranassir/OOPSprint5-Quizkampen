@@ -25,6 +25,7 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
     private PrintWriter out;
 
 
+
     public QuizClient(String serverAddress) throws Exception {
         try {
             socket = new Socket(serverAddress, 5554);
@@ -204,7 +205,21 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                     //textarea.setText(null);
                     textarea.setVisible(false);
                 }
+                else if(response.startsWith("RÖD")) {
+                    for (int i = 0; i < answerButtons.length; i++) {
+                        answerButtons[i].setVisible(true);
+                        answerButtons[i].setBackground(Color.red);
+                        answerButtons[i].setPreferredSize(new Dimension(300, 100));
+                    }
 
+                }else if(response.startsWith("RÖD2")){
+                    for (int i = 0; i < answerButtons.length; i++) {
+                        answerButtons[i].setVisible(true);
+                        answerButtons[i].setBackground(Color.red);
+                        answerButtons[i].setPreferredSize(new Dimension(300, 100));
+                    }
+
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -212,7 +227,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
 
 
     }
-
     private void updateCategoryButtons(String categories) {
         String[] categoryArray = categories.split(",");
         for (int i = 0; i < categoryButtons.length; i++) {
@@ -223,7 +237,9 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             } else {
                 categoryButtons[i].setVisible(false);
             }
+
         }
+
     }
 
     private void updateAnswerButtons(String answers) {
@@ -233,8 +249,11 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
                 answerButtons[i].setVisible(true);
                 answerButtons[i].setText(answerArray[i]);
                 answerButtons[i].setPreferredSize(new Dimension(300, 100));
-            } else {
-                answerButtons[i].setVisible(false);
+                answerButtons[i].setBackground(Color.WHITE);
+                answerButtons[i].addActionListener(e -> {
+                    JButton clickedButton = (JButton)e.getSource();
+                    clickedButton.setBackground(Color.GREEN);
+                });
             }
         }
     }
@@ -247,10 +266,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
             button.setVisible(false);
         }
     }
-
-
-
-
 
 
 

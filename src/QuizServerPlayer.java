@@ -132,7 +132,9 @@ public class QuizServerPlayer extends Thread {
                     quizAnswersList.add(answer);
                     answerNumber++;
 
+
                 }
+
 
             }
 
@@ -148,8 +150,6 @@ public class QuizServerPlayer extends Thread {
             amountOfCategories++;
         }
     }
-
-
 
     public void ImportSelectedQuestions() {
         quizQuestionRandomiser.clear();
@@ -273,11 +273,20 @@ public class QuizServerPlayer extends Thread {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundX++;
+                            sleepy();
+
+
+
 
                         }
+                        else output.println("RÖD");
+
                     }
+
                 }
                 sleepy();
+
+
             }
 
             //roundScore = correctAnswersPerRoundX;                 //sätter X score för denna runda till... denna rundas score
@@ -419,9 +428,21 @@ public class QuizServerPlayer extends Thread {
                 if (tempAnswer == a) {
                     if (a.getCorrectAnswer() == true) {
                         correctAnswersPerRoundY++;
-                    }
+                        sleepy();
+
+
+
+
+                    }else opponent.output.println("RÖD2");
+
+
+
                 }
+
             }
+            sleepy();
+
+
         }
         //opponent.roundScore = correctAnswersPerRoundY;                 //sätter Y score för denna runda till... denna rundas score
         String temp = "" + correctAnswersPerRoundY;
@@ -474,8 +495,7 @@ public class QuizServerPlayer extends Thread {
 
 
 //denna är identisk till QuizGame, förutom att det är Y som väljer kategori
-
-    public int QuizGameY(int totalcorrecty) throws IOException {
+public int QuizGameY(int totalcorrecty) throws IOException, InterruptedException {
 
                                                                     //funkar inte oavsätt opponent eller main... konstigt
         int totalCorrectAnswersY = totalcorrecty;                      //måste sparas någonstans
@@ -524,10 +544,20 @@ public class QuizServerPlayer extends Thread {
                     if (tempAnswer == a) {
                         if (a.getCorrectAnswer() == true) {
                             correctAnswersPerRoundY++;
+                            sleepy();
+
+
                            // opponent.roundScore = correctAnswersPerRoundY;         //sätter roundscore för Y spelare
                         }
+                        else opponent.output.println("RÖD2");
+
+
+
                     }
+
                 }
+                sleepy();
+
             }
 
             //opponent.roundScore = correctAnswersPerRoundY;                 //sätter Y score för denna runda till... denna rundas score
@@ -617,7 +647,7 @@ public class QuizServerPlayer extends Thread {
 
     //nu får X spela med kategori som valdes av Y
 
-    public int opponentturnX(int correctanswerX) throws IOException {
+    public int opponentturnX(int correctanswerX) throws IOException, InterruptedException {
 
 
         output.println("SHIDE");
@@ -654,7 +684,7 @@ public class QuizServerPlayer extends Thread {
                     break;
                 }
             }
-   //test
+   //
 
             userAnswerInt = userAnswerInt - 1;
             Object tempAnswer = randomisedAnswers.get(userAnswerInt);
@@ -662,9 +692,21 @@ public class QuizServerPlayer extends Thread {
                 if (tempAnswer == a) {
                     if (a.getCorrectAnswer() == true) {
                         correctAnswersPerRound++;
+                        sleepy();
+
+
+
                     }
+                    else output.println("RÖD");
+
+
+
                 }
+
+
             }
+            sleepy();
+
         }
         String temp = "" + correctAnswersPerRound;
         scoreRoundX.add(temp);
@@ -726,14 +768,6 @@ public class QuizServerPlayer extends Thread {
 
 
     }
-
-
-
-
-
-
-
-
 
 
 
