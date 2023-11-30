@@ -245,4 +245,3 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         out.println(clickedButton.getText());
     }
 }
-

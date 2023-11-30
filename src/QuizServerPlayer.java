@@ -253,7 +253,6 @@ public class QuizServerPlayer extends Thread {
                 }
                 sleepy();
 
-
             }
 
 
@@ -269,16 +268,11 @@ public class QuizServerPlayer extends Thread {
                 input.readLine();
                 break;
 
-                // output.println("MESSAGE Poäng för runda" + index + " är lika med " + scoreRoundX);
-
             }
 
-            //JOptionPane.showMessageDialog(null, "Antal rätt: " +correctAnswersPerRound);
             totalCorrectAnswersX = totalCorrectAnswersX + correctAnswersPerRoundX;
             quizAnswersAfterRand.clear();
             categoryListRandom.remove(categorySelected);
-
-
 
 
             opponent.output.println("REMOVE_BUTTONS");
@@ -293,8 +287,6 @@ public class QuizServerPlayer extends Thread {
         opponent.output.println("SHIDE");
         opponent.output.println("MESSAGE totala poäng" + ", " + totalCorrectAnswersY + "motståndaren fick: " + totalCorrectAnswersX);
     }
-
-    //test merge
 
 
     public void CategorySelection() throws IOException {       //X spelaren som sagt väljer kategori
@@ -431,12 +423,11 @@ public class QuizServerPlayer extends Thread {
 
     public int QuizGameY(int totalcorrecty) throws IOException, InterruptedException {
 
-        //funkar inte oavsätt opponent eller main... konstigt
-        int totalCorrectAnswersY = totalcorrecty;                      //måste sparas någonstans
+        int totalCorrectAnswersY = totalcorrecty;
 
         for (int i = 0; i < amountOfRounds; i++) {
 
-            CategorySelectionY();                      //y väljer kategori
+            CategorySelectionY();
 
             int correctAnswersPerRoundY = 0;
             ImportSelectedQuestions();
@@ -447,7 +438,7 @@ public class QuizServerPlayer extends Thread {
                 RandomiseAnswers();
 
 
-                int userAnswerInt = 0;    //SPARAR SVAR
+                int userAnswerInt = 0;
                 String inputtext = "";
 
                 opponent.output.println("MESSAGE " + quizQuestionRandomiser.get(j).getQuizQuestion());
@@ -521,7 +512,6 @@ public class QuizServerPlayer extends Thread {
 
 
     public void CategorySelectionY() throws IOException {
-
 
         Collections.shuffle(categoryListRandom, new Random());
         int categorySelector = 0;
@@ -633,7 +623,6 @@ public class QuizServerPlayer extends Thread {
             opponent.output.println("SCORE Motståndares poäng: " + scoreRoundX.get(scoreRoundX.size() - 1));
 
 
-
             output.println("CATEGORY Bra jobbat!");
             input.readLine();
             output.println("REMOVE_BUTTONS");
@@ -665,7 +654,7 @@ public class QuizServerPlayer extends Thread {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
             output.println("Välkommen" + tag);
-            output.println("MESSAGE väntar på spelare");
+            output.println("MESSAGE Väntar på spelare");
 
         } catch (IOException e) {
             System.out.println("Player missing");
