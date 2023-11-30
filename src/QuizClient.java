@@ -69,7 +69,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         messageArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         messageArea.setText("Waiting for players...");
         messageArea.setFont(new Font("Serif", Font.PLAIN, 20));
-        //messageArea.setHorizontalAlignment(SwingConstants.CENTER);
         messageArea.setPreferredSize(new Dimension(550, 100));
         messageArea.setBackground(Color.WHITE);
         messageArea.setOpaque(true);
