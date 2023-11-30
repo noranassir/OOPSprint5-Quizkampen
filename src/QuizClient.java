@@ -229,16 +229,6 @@ public class QuizClient extends JFrame implements Serializable, ActionListener {
         JButton clickedButton = (JButton) e.getSource();
         out.println(clickedButton.getText());
 
-     /*   for(Answer answer : game.quizAnswersList){
-            if(answer.getQuizAnswer() == clickedButton.getText() && answer.getCorrectAnswer() == true){
-                clickedButton.setBackground(Color.GREEN);
-            }
-            else {
-                clickedButton.setBackground(Color.RED);
-            }
-        }*/
-
-
     }
 }
 
