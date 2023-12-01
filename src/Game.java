@@ -28,8 +28,6 @@ public class Game {
     public int selectedCategory = 0;
 
 
-
-
     public void importQuestions() throws IOException {
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(".\\src\\Quiz.txt"))) {
